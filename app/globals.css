@@ -1,0 +1,122 @@
+@import "tailwindcss";
+
+:root {
+  /* Paleta Nuditos - Extraída del logo */
+  --nuditos-marron-oscuro: #5D4E3D;
+  --nuditos-marron: #8B7355;
+  --nuditos-marron-claro: #A68B6C;
+  --nuditos-rosa: #E8D5D5;
+  --nuditos-rosa-claro: #F5E6E8;
+  --nuditos-crema: #F9F5F0;
+  --nuditos-beige: #EFE8DC;
+  --nuditos-verde: #B8C4B8;
+  --nuditos-verde-claro: #C9D4C9;
+  --nuditos-amarillo: #E8D7A0;
+  --nuditos-amarillo-claro: #F2EBC8;
+
+  --background: var(--nuditos-crema);
+  --foreground: var(--nuditos-marron-oscuro);
+}
+
+@theme inline {
+  --color-nuditos-marron-oscuro: var(--nuditos-marron-oscuro);
+  --color-nuditos-marron: var(--nuditos-marron);
+  --color-nuditos-marron-claro: var(--nuditos-marron-claro);
+  --color-nuditos-rosa: var(--nuditos-rosa);
+  --color-nuditos-rosa-claro: var(--nuditos-rosa-claro);
+  --color-nuditos-crema: var(--nuditos-crema);
+  --color-nuditos-beige: var(--nuditos-beige);
+  --color-nuditos-verde: var(--nuditos-verde);
+  --color-nuditos-verde-claro: var(--nuditos-verde-claro);
+  --color-nuditos-amarillo: var(--nuditos-amarillo);
+  --color-nuditos-amarillo-claro: var(--nuditos-amarillo-claro);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-nunito);
+
+  --radius-xl: 24px;
+  --radius-2xl: 32px;
+  --radius-3xl: 48px;
+
+  --shadow-soft: 0 4px 20px rgba(139, 115, 85, 0.08);
+  --shadow-medium: 0 8px 30px rgba(139, 115, 85, 0.12);
+  --shadow-gentle: 0 2px 10px rgba(139, 115, 85, 0.06);
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans), system-ui, sans-serif;
+}
+
+/* Animaciones suaves */
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes gentle-float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+@keyframes soft-pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+.animate-fade-in-up {
+  animation: fade-in-up 0.6s ease-out forwards;
+}
+
+.animate-gentle-float {
+  animation: gentle-float 3s ease-in-out infinite;
+}
+
+.animate-soft-pulse {
+  animation: soft-pulse 2s ease-in-out infinite;
+}
+
+/* Transiciones fluidas */
+.transition-soft {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Focus suave y accesible */
+.focus-soft:focus-visible {
+  outline: 2px solid var(--nuditos-marron);
+  outline-offset: 2px;
+}
+
+/* Scrollbar personalizada */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--nuditos-crema);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--nuditos-marron-claro);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--nuditos-marron);
+}
