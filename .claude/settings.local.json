@@ -5,7 +5,14 @@
       "Bash(mv nuditos-web/* .)",
       "Bash(mv nuditos-web/.* .)",
       "Bash(npm install:*)",
-      "Bash(npm run:*)"
+      "Bash(npm run:*)",
+      "WebFetch(domain:github.com)",
+      "WebFetch(domain:raw.githubusercontent.com)",
+      "Bash(npx claude-code-templates@latest:*)",
+      "Bash(npx tsc:*)",
+      "Bash(pkill -f \"next build\")",
+      "Bash(taskkill /F /IM node.exe)",
+      "Bash(npx next:*)"
     ]
   }
 }
