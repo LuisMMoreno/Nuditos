@@ -30,47 +30,49 @@ export default function NubiSection() {
   return (
     <section className="py-16 sm:py-24 bg-gradient-to-b from-nuditos-crema to-white" aria-labelledby="nubi-heading">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Header */}
-        <div className="text-center max-w-3xl mx-auto mb-12 sm:mb-16">
-          <span className="text-nuditos-marron-claro font-semibold text-xs sm:text-sm uppercase tracking-wider mb-3 block">
-            Regulación Emocional
-          </span>
-          <h2 id="nubi-heading" className="text-2xl sm:text-3xl lg:text-4xl font-bold text-nuditos-marron-oscuro mb-4 sm:mb-6">
-            Nubi, tu ancla de calma
-          </h2>
-          <p className="text-base sm:text-lg lg:text-xl text-nuditos-marron leading-relaxed">
-            Un amigurumi diseñado bajo principios terapéuticos para brindar contención y seguridad.
-          </p>
-        </div>
-
-        {/* Content con Image Background y Glassmorphism */}
-        <div className="relative rounded-2xl sm:rounded-3xl overflow-hidden mb-16 sm:mb-20 shadow-medium">
-          <div className="absolute inset-0 bg-gradient-to-br from-nuditos-rosa via-nuditos-crema to-nuditos-amarillo-claro">
-            {/* Placeholder para imagen real */}
+        {/* Texto Introductorio con Pasarela (Marquee) de Fondo */}
+        <div className="relative mb-16 sm:mb-20 rounded-[2.5rem] overflow-hidden bg-white/50 backdrop-blur-sm border border-white/60 shadow-medium py-20 sm:py-32">
+          
+          {/* Pasarela a la derecha (Fondo) */}
+          <div className="absolute inset-0 w-full h-full overflow-hidden opacity-30 pointer-events-none flex items-center">
+            <div className="flex w-[300%] sm:w-[200%] lg:w-[150%] animate-marquee-right">
+              {/* Doble set de imágenes para el bucle (6 + 6) */}
+              {[...Array(6), ...Array(6)].map((_, i) => (
+                <div 
+                  key={i} 
+                  className="w-56 sm:w-64 md:w-80 h-72 sm:h-80 md:h-96 mx-3 sm:mx-4 flex-shrink-0 bg-nuditos-crema/40 backdrop-blur-sm border border-nuditos-marron/5 rounded-[2rem] sm:rounded-[2.5rem] overflow-hidden relative"
+                >
+                  {/* Placeholder vacío decorativo */}
+                  <div className="absolute inset-0 bg-gradient-to-br from-nuditos-beige/20 to-nuditos-crema/20 flex items-center justify-center">
+                    <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-white/30 flex items-center justify-center shadow-inner">
+                      <svg className="w-8 h-8 sm:w-10 sm:h-10 text-nuditos-marron/30" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-5-9c.83 0 1.5-.67 1.5-1.5S7.83 8 7 8s-1.5.67-1.5 1.5S6.17 11 7 11zm3.5 3c-.83 0-1.5-.67-1.5-1.5S9.67 11 10.5 11s1.5.67 1.5 1.5-.67 1.5-1.5 1.5zm3.5-3c-.83 0-1.5-.67-1.5-1.5S13.17 8 14 8s1.5.67 1.5 1.5-.67 1.5-1.5 1.5zm3.5 3c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/>
+                      </svg>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+            
+            {/* Fades a los lados del fondo */}
+            <div className="absolute top-0 left-0 bottom-0 w-24 sm:w-48 bg-gradient-to-r from-white/90 to-transparent pointer-events-none" />
+            <div className="absolute top-0 right-0 bottom-0 w-24 sm:w-48 bg-gradient-to-l from-white/90 to-transparent pointer-events-none" />
           </div>
 
-          {/* Capa decorativa */}
-          <div className="absolute -bottom-10 -right-10 w-48 h-48 sm:w-64 sm:h-64 bg-nuditos-verde-claro rounded-full opacity-50 blur-3xl mix-blend-multiply" />
-          <div className="absolute top-0 -left-10 w-40 h-40 sm:w-56 sm:h-56 bg-nuditos-rosa-claro rounded-full opacity-50 blur-3xl mix-blend-multiply" />
+          {/* Contenido Frontal */}
+          <div className="relative z-10 text-center max-w-4xl mx-auto px-6">
+            <p className="text-3xl sm:text-4xl md:text-5xl text-nuditos-marron-oscuro leading-relaxed sm:leading-snug drop-shadow-sm">
+              <span className="font-display italic text-4xl sm:text-5xl md:text-6xl pr-2 text-nuditos-marron">Nubi</span> 
+              es más que un simple muñeco, es un 
+              <strong className="font-bold px-2 block sm:inline">compañero terapéutico</strong>
+              diseñado para abrazar tus días y brindarte 
+              <span className="font-display italic text-4xl sm:text-5xl md:text-6xl pl-2 text-nuditos-marron">regulación emocional profunda</span>.
+            </p>
 
-          {/* Contenido Glassmorphism */}
-          <div className="relative z-10 px-4 py-16 sm:p-12 lg:p-16 flex items-center justify-center min-h-[400px] sm:min-h-[500px]">
-            <div className="bg-white/70 backdrop-blur-md border border-white/60 p-6 sm:p-10 lg:p-12 rounded-2xl sm:rounded-3xl max-w-2xl text-center shadow-[0_8px_30px_rgb(0,0,0,0.06)]">
-              <div className="w-20 h-20 sm:w-24 sm:h-24 mx-auto mb-6 rounded-full bg-nuditos-crema flex items-center justify-center shadow-soft">
-                <svg className="w-10 h-10 sm:w-12 sm:h-12 text-nuditos-marron" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                  <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-5-9c.83 0 1.5-.67 1.5-1.5S7.83 8 7 8s-1.5.67-1.5 1.5S6.17 11 7 11zm3.5 3c-.83 0-1.5-.67-1.5-1.5S9.67 11 10.5 11s1.5.67 1.5 1.5-.67 1.5-1.5 1.5zm3.5-3c-.83 0-1.5-.67-1.5-1.5S13.17 8 14 8s1.5.67 1.5 1.5-.67 1.5-1.5 1.5zm3.5 3c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/>
-                </svg>
-              </div>
-              <blockquote className="text-base sm:text-lg text-nuditos-marron-oscuro font-medium leading-relaxed mb-4">
-                "No es solo un muñeco. Es esa presencia física y el estímulo sensorial que buscas cuando atraviesas la tormenta."
-              </blockquote>
-              <p className="text-sm sm:text-base text-nuditos-marron leading-relaxed mb-8">
-                El diseño abrazable de Nubi estimula la respuesta de relajación del sistema nervioso, siendo una herramienta cálida en la gestión de la ansiedad.
-              </p>
-
+            <div className="mt-12 text-center">
               <Link href="/nubi">
-                <Button size="lg" variant="primary" className="shadow-soft hover:shadow-medium hover:scale-105 active:scale-95">
-                  Explorar Opciones Terapéuticas
+                <Button size="lg" variant="primary" className="shadow-medium hover:shadow-lg hover:-translate-y-1 active:translate-y-0 active:scale-95 px-10 transition-all duration-300">
+                  Conocer a Nubi
                 </Button>
               </Link>
             </div>

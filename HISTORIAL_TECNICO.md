@@ -615,6 +615,26 @@ Se realizaron ajustes estéticos y de contenido en la pantalla de carga principa
 
 ---
 
+## 2026-04-14 - Implementación de Pasarela y Nueva Topografía en Home
+
+### Qué se hizo
+Se actualizó la sección dedicada a Nubi dentro del Home (`NubiSection.tsx`) reemplazando el bloque central estático de texto y fondo degradado, por una galería infinita (Marquee) animada dinámicamente hacia la derecha. Adicionalmente, se mezclaron las fuentes `Nunito` y `Instrument Serif` (cursiva) para un texto introductorio más potente y de naturaleza editorial.
+
+### Por qué se hizo
+- Otorgar un mayor atractivo visual al Home y demostrar interactividad continua.
+- Integrar la segunda tipografía de la marca (`Instrument Serif`) para destacar las palabras clave y fortalecer el carácter premium del sitio web.
+
+### Cómo se hizo
+- Creación de dos utilidades clave en `app/globals.css`: `@keyframes marquee-right` para el movimiento y `hover:animation-paused` para que el usuario pueda detener la pasarela.
+- Modificación de `src/components/home/NubiSection.tsx` reemplazando su centro vertical por los arreglos del *Marquee*. Set doble de fotos de placeholder añadidas.
+
+**Archivos modificados:**
+- `app/globals.css` - Nuevos keyframes y comandos utilitarios.
+- `src/components/home/NubiSection.tsx` - Reestructuración de la introducción a Nubi y pasarela infinita.
+- `HISTORIAL_TECNICO.md` - Actualización de documentación.
+
+---
+
 ## 2026-04-13 - Implementación de Páginas Dinámicas de Producto con Storytelling
 
 ### Qué se hizo

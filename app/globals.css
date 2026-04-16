@@ -112,6 +112,23 @@ body {
   animation: soft-pulse 2s ease-in-out infinite;
 }
 
+@keyframes marquee-right {
+  from {
+    transform: translateX(-50%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+.animate-marquee-right {
+  animation: marquee-right 30s linear infinite;
+}
+
+.hover\:animation-paused:hover {
+  animation-play-state: paused;
+}
+
 /* Transiciones fluidas */
 .transition-soft {
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);

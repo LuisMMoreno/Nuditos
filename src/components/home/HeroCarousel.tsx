@@ -2,31 +2,12 @@
 
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { ChevronLeft, ChevronRight, Pause, Play } from 'lucide-react';
-import Button from '../Button';
-import Link from 'next/link';
+import Image from 'next/image';
 
 const slides = [
-  {
-    title: 'Tu compañero para la calma interior',
-    text: 'Amigurumis diseñados específicamente para la regulación emocional y el confort profundo.',
-    cta: 'Conocer a Nubi',
-    href: '/nubi',
-    gradient: 'from-nuditos-rosa via-nuditos-crema to-nuditos-amarillo-claro',
-  },
-  {
-    title: 'Siente el alivio de un refugio seguro',
-    text: 'Modelos terapéuticos con peso que brindan contención cuando las palabras no alcanzan.',
-    cta: 'Descubrir beneficios',
-    href: '/nubi',
-    gradient: 'from-nuditos-verde-claro via-nuditos-crema to-nuditos-rosa-claro',
-  },
-  {
-    title: 'Personaliza su abrazo',
-    text: 'Descubre las ropitas tejidas con intención y cariño para tu compañero silencioso.',
-    cta: 'Ver ropitas',
-    href: '/nubi',
-    gradient: 'from-nuditos-amarillo-claro via-nuditos-crema to-nuditos-beige',
-  },
+  { id: 1, imagePath: '/banners/banner1.jpg', bgFallback: 'bg-gray-200' },
+  { id: 2, imagePath: '/banners/banner2.jpg', bgFallback: 'bg-gray-300' },
+  { id: 3, imagePath: '/banners/banner3.jpg', bgFallback: 'bg-gray-400' },
 ];
 
 const AUTOPLAY_INTERVAL = 6000;
@@ -89,61 +70,61 @@ export default function HeroCarousel() {
 
   return (
     <section
-      className="relative overflow-hidden min-h-[80vh] sm:min-h-[70vh]"
+      className="relative overflow-hidden w-full h-[60vh] sm:h-[70vh] lg:h-[80vh] mt-[100px] sm:mt-[110px]"
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
       role="region"
-      aria-label="Galería destacada"
+      aria-label="Banner promocional"
       aria-roledescription="carrusel"
     >
       {slides.map((slide, index) => (
         <div
-          key={index}
+          key={slide.id}
           className={`
-            absolute inset-0 transition-opacity duration-700 ease-out
-            bg-gradient-to-br ${slide.gradient}
-            ${index === currentSlide ? 'opacity-100' : 'opacity-0 pointer-events-none'}
+            absolute inset-0 transition-opacity duration-700 ease-out flex items-center justify-center
+            ${slide.bgFallback} text-black/50
+            ${index === currentSlide ? 'opacity-100 z-10' : 'opacity-0 z-0 pointer-events-none'}
           `}
           aria-hidden={index !== currentSlide}
           role="group"
           aria-roledescription="slide"
-          aria-label={`${index + 1} de ${slides.length}: ${slide.title}`}
+          aria-label={`Banner ${index + 1}`}
         >
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 sm:pt-32 pb-20 flex items-center min-h-[80vh] sm:min-h-[70vh]">
-            <div className="max-w-2xl">
-              <h1 className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold text-nuditos-marron-oscuro mb-4 sm:mb-6 leading-tight">
-                {slide.title}
-              </h1>
-              <p className="text-base sm:text-lg lg:text-xl text-nuditos-marron mb-6 sm:mb-8 leading-relaxed max-w-xl">
-                {slide.text}
-              </p>
-              <Link href={slide.href}>
-                <Button size="lg" variant="primary" aria-label={slide.cta}>
-                  {slide.cta}
-                </Button>
-              </Link>
-            </div>
+          {/* Instrucciones para el usuario; la imagen se mostrará por encima si existe */}
+          <div className="absolute inset-0 flex flex-col items-center justify-center text-center p-6 z-0">
+            <h2 className="text-xl sm:text-2xl font-bold mb-2">Espacio para Banner {slide.id}</h2>
+            <p className="text-sm">Guarda la imagen en <strong>public/banners/banner{slide.id}.jpg</strong></p>
           </div>
 
-          <div className="absolute bottom-20 right-4 sm:right-10 w-24 h-24 sm:w-40 sm:h-40 opacity-15 animate-gentle-float">
-            <div className="w-full h-full rounded-full bg-nuditos-marron blur-3xl" />
+          {/* Imagen del banner - oculta cualquier error si no existe la imagen con object-cover y div relativo */}
+          <div className="absolute inset-0 z-10">
+            {/* Usa un un tag picture/img nativo para mejor manejo de errores temporales antes de subirlas */}
+            <img 
+              src={slide.imagePath} 
+              alt={`Banner Promocional ${slide.id}`} 
+              className="w-full h-full object-cover"
+              onError={(e) => {
+                // Oculta la imagen si está rota para mostrar el mensaje de abajo
+                e.currentTarget.style.display = 'none';
+              }}
+            />
           </div>
         </div>
       ))}
 
       {/* Controls */}
       <div
-        className="absolute bottom-4 sm:bottom-6 left-1/2 -translate-x-1/2 flex items-center gap-3 sm:gap-4"
+        className="absolute bottom-4 sm:bottom-6 left-1/2 -translate-x-1/2 flex items-center gap-3 sm:gap-4 z-20"
         role="tablist"
         aria-label="Navegación del carrusel"
       >
         <button
           onClick={prevSlide}
-          className="w-11 h-11 sm:w-12 sm:h-12 rounded-full bg-white/90 backdrop-blur-sm flex items-center justify-center hover:bg-white hover:scale-105 active:scale-95 transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-nuditos-marron focus-visible:ring-offset-2 shadow-soft"
+          className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-white/60 backdrop-blur-md flex items-center justify-center hover:bg-white hover:scale-105 active:scale-95 transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black shadow-soft"
           aria-label="Slide anterior"
           disabled={isPaused}
         >
-          <ChevronLeft className="w-5 h-5 sm:w-6 sm:h-6 text-nuditos-marron" />
+          <ChevronLeft className="w-5 h-5 sm:w-6 sm:h-6 text-black" />
         </button>
 
         <div className="flex gap-2" role="group" aria-label="Indicadores de slide">
@@ -152,10 +133,10 @@ export default function HeroCarousel() {
               key={index}
               onClick={() => goToSlide(index)}
               className={`
-                rounded-full transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-nuditos-marron
+                rounded-full transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black
                 ${index === currentSlide
-                  ? 'w-8 h-2 bg-nuditos-marron'
-                  : 'w-2 h-2 bg-nuditos-marron/40 hover:bg-nuditos-marron/60'
+                  ? 'w-8 h-2 bg-black'
+                  : 'w-2 h-2 bg-black/40 hover:bg-black/60'
                 }
               `}
               aria-label={`Ir al slide ${index + 1}`}
@@ -168,30 +149,30 @@ export default function HeroCarousel() {
 
         <button
           onClick={nextSlide}
-          className="w-11 h-11 sm:w-12 sm:h-12 rounded-full bg-white/90 backdrop-blur-sm flex items-center justify-center hover:bg-white hover:scale-105 active:scale-95 transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-nuditos-marron focus-visible:ring-offset-2 shadow-soft"
+          className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-white/60 backdrop-blur-md flex items-center justify-center hover:bg-white hover:scale-105 active:scale-95 transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black shadow-soft"
           aria-label="Siguiente slide"
           disabled={isPaused}
         >
-          <ChevronRight className="w-5 h-5 sm:w-6 sm:h-6 text-nuditos-marron" />
+          <ChevronRight className="w-5 h-5 sm:w-6 sm:h-6 text-black" />
         </button>
 
         <button
           onClick={() => setIsPaused(!isPaused)}
-          className="w-11 h-11 sm:w-12 sm:h-12 rounded-full bg-white/90 backdrop-blur-sm flex items-center justify-center hover:bg-white hover:scale-105 active:scale-95 transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-nuditos-marron focus-visible:ring-offset-2 shadow-soft"
+          className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-white/60 backdrop-blur-md flex items-center justify-center hover:bg-white hover:scale-105 active:scale-95 transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black shadow-soft"
           aria-label={isPaused ? 'Reproducir' : 'Pausar'}
         >
           {isPaused ? (
-            <Play className="w-5 h-5 sm:w-6 sm:h-6 text-nuditos-marron" />
+            <Play className="w-5 h-5 sm:w-6 sm:h-6 text-black" />
           ) : (
-            <Pause className="w-5 h-5 sm:w-6 sm:h-6 text-nuditos-marron" />
+            <Pause className="w-5 h-5 sm:w-6 sm:h-6 text-black" />
           )}
         </button>
       </div>
 
       {/* Progress bar */}
-      <div className="absolute bottom-0 left-0 right-0 h-1 bg-nuditos-marron/10">
+      <div className="absolute bottom-0 left-0 right-0 h-1 bg-black/10 z-20">
         <div
-          className="h-full bg-nuditos-marron transition-all duration-100 ease-linear"
+          className="h-full bg-black transition-all duration-100 ease-linear"
           style={{ width: `${progress}%` }}
           role="progressbar"
           aria-valuenow={progress}

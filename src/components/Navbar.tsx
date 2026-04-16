@@ -4,7 +4,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { useState, useEffect, useRef } from 'react';
 import { usePathname } from 'next/navigation';
-import { ShoppingCart, Menu, X, Search } from 'lucide-react';
+import { ShoppingCart, Menu, X, Search, ChevronLeft, ChevronRight } from 'lucide-react';
 import { useCart } from '@/src/context/CartContext';
 
 export default function Navbar() {
@@ -12,7 +12,6 @@ export default function Navbar() {
   const pathname = usePathname();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const [prevScroll, setPrevScroll] = useState(0);
   const [showSearch, setShowSearch] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
   const searchRef = useRef<HTMLInputElement>(null);
@@ -20,9 +19,7 @@ export default function Navbar() {
   // Scroll detection with direction
   useEffect(() => {
     const handleScroll = () => {
-      const current = window.scrollY;
-      setScrolled(current > 20);
-      setPrevScroll(current);
+      setScrolled(window.scrollY > 20);
     };
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
@@ -32,8 +29,6 @@ export default function Navbar() {
   useEffect(() => {
     if (isMenuOpen) {
       document.body.style.overflow = 'hidden';
-      const firstLink = menuRef.current?.querySelector('a') as HTMLElement;
-      firstLink?.focus();
     } else {
       document.body.style.overflow = '';
     }
@@ -54,19 +49,7 @@ export default function Navbar() {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, [showSearch]);
 
-  // Keyboard navigation for mobile menu
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape' && isMenuOpen) {
-        setIsMenuOpen(false);
-      }
-    };
-    document.addEventListener('keydown', handleKeyDown);
-    return () => document.removeEventListener('keydown', handleKeyDown);
-  }, [isMenuOpen]);
-
   const navLinks = [
-    { href: '/', label: 'Inicio' },
     { href: '/nubi', label: 'Nubi' },
     { href: '/monas', label: 'Moñas' },
     { href: '/bolsos', label: 'Bolsos' },
@@ -78,132 +61,136 @@ export default function Navbar() {
   const isActive = (href: string) => pathname === href;
 
   return (
-    <div className="fixed top-0 left-0 right-0 z-50 px-4 pt-4 sm:px-6 lg:px-8">
-      {/* Scroll progress indicator */}
-      {scrolled && (
-        <div className="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-nuditos-marron via-nuditos-rosa to-nuditos-marron origin-left transition-transform duration-300" style={{ width: `${Math.min(prevScroll / 10, 100)}%` }} />
-      )}
+    <header className="fixed top-0 left-0 right-0 z-50 bg-white">
+      {/* Franja de Promociones */}
+      <div className="bg-[#2A2A2A] text-white text-xs sm:text-sm py-2.5 px-4 flex justify-between items-center w-full">
+        <button aria-label="Promoción anterior" className="opacity-80 hover:opacity-100 transition-opacity">
+          <ChevronLeft className="w-4 h-4 sm:w-5 sm:h-5" />
+        </button>
+        <div className="text-center flex-1 font-medium tracking-wide">
+          ESPACIO PARA TUS PROMOCIONES - ENVÍO GRATIS
+        </div>
+        <button aria-label="Siguiente promoción" className="opacity-80 hover:opacity-100 transition-opacity">
+          <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5" />
+        </button>
+      </div>
 
       <nav
-        className={`max-w-7xl mx-auto transition-all duration-500 rounded-full border ${
-          scrolled
-            ? 'bg-white/80 backdrop-blur-xl border-white/60 shadow-[0_8px_30px_rgb(0,0,0,0.08)] py-1 sm:py-2'
-            : 'bg-white/60 backdrop-blur-md border-white/40 shadow-[0_4px_20px_rgb(0,0,0,0.04)] py-2 sm:py-3'
+        className={`w-full transition-all duration-300 border-b border-gray-100 ${
+          scrolled ? 'py-2 shadow-sm' : 'py-4'
         }`}
         role="navigation"
         aria-label="Main navigation"
       >
-        <div className="flex items-center justify-between px-6 sm:px-8">
-          {/* Logo */}
-          <Link href="/" className="flex items-center group relative outline-none focus-soft rounded-full py-1" aria-label="Nuditos home">
-            <div className={`relative transition-all duration-500 ease-in-out group-hover:scale-105 drop-shadow-sm ${scrolled ? 'w-24 h-12' : 'w-32 h-14'}`}>
-              <Image
-                src="/logo.png"
-                alt="Logo Nuditos"
-                fill
-                className="object-contain"
-                priority
-              />
-            </div>
-          </Link>
+        <div className="max-w-[1600px] mx-auto px-4 sm:px-8 flex items-center justify-between">
+          
+          {/* Left Area: Desktop Nav Links & Mobile Menu */}
+          <div className="flex items-center flex-1 justify-start">
+            {/* Mobile Menu Button */}
+            <button
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+              className="lg:hidden p-2 mr-2"
+              aria-label="Menú"
+            >
+              {isMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+            </button>
 
-          {/* Desktop Navigation */}
-          <ul className="hidden md:flex items-center lg:space-x-1" role="menubar">
-            {navLinks.map((link) => (
-              <li key={link.href} role="none">
-                <Link
-                  href={link.href}
-                  role="menuitem"
-                  className={`relative px-2 lg:px-4 py-2 text-sm lg:text-base font-semibold transition-all duration-300 rounded-full focus-soft whitespace-nowrap ${
-                    isActive(link.href)
-                      ? 'bg-nuditos-marron text-white'
-                      : 'text-nuditos-marron-oscuro hover:bg-nuditos-marron/5'
-                  }`}
-                  aria-current={isActive(link.href) ? 'page' : undefined}
-                >
-                  {link.label}
-                </Link>
-              </li>
-            ))}
-          </ul>
+            {/* Desktop Links */}
+            <ul className="hidden lg:flex items-center space-x-6 xl:space-x-8" role="menubar">
+              {navLinks.map((link) => (
+                <li key={link.href} role="none">
+                  <Link
+                    href={link.href}
+                    role="menuitem"
+                    className={`text-sm tracking-[0.1em] uppercase font-medium hover:text-gray-500 transition-colors ${
+                      isActive(link.href) ? 'border-b-2 border-black pb-1' : ''
+                    }`}
+                  >
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
 
-          {/* Cart & Actions */}
-          <div className="flex items-center space-x-2 sm:space-x-4">
-            {/* Search toggle */}
-            <div ref={searchRef} className="relative">
+          {/* Center Area: Logo */}
+          <div className="flex-shrink-0 flex justify-center items-center">
+            <Link href="/" className="outline-none py-1 flex items-center justify-center">
+              <div className={`relative transition-all duration-500 ease-in-out ${scrolled ? 'w-24 h-10' : 'w-32 h-14'}`}>
+                <Image
+                  src="/logo.png"
+                  alt="Logo Nuditos"
+                  fill
+                  className="object-contain"
+                  priority
+                />
+              </div>
+            </Link>
+          </div>
+
+          {/* Right Area: Search & Cart */}
+          <div className="flex items-center flex-1 justify-end space-x-4 sm:space-x-6">
+            <div ref={searchRef} className="relative hidden sm:block">
               {showSearch ? (
                 <input
                   type="search"
                   placeholder="Buscar..."
-                  className="w-40 sm:w-48 px-4 py-2 rounded-full bg-white/80 backdrop-blur border border-nuditos-marron/20 text-nuditos-marron-oscuro text-sm focus:soft outline-none transition-all"
+                  className="w-48 px-3 py-1.5 border-b border-black text-sm outline-none transition-all"
                   autoFocus
                 />
               ) : (
                 <button
                   onClick={() => setShowSearch(true)}
-                  className="p-3 rounded-full hover:bg-nuditos-marron/5 transition-all duration-300 focus-soft"
+                  className="p-2 hover:opacity-70 transition-opacity"
                   aria-label="Buscar"
                 >
-                  <Search className="w-5 h-5 text-nuditos-marron-oscuro" />
+                  <Search className="w-5 h-5 sm:w-6 sm:h-6" />
                 </button>
               )}
             </div>
 
-            {/* Cart with animated badge */}
             <Link
               href="/carrito"
-              className="relative p-3 rounded-full hover:bg-nuditos-marron/5 transition-all duration-300 focus-soft group min-h-[44px] min-w-[44px] flex items-center justify-center"
-              aria-label={`Carrito con ${totalItems} productos`}
+              className="relative p-2 hover:opacity-70 transition-opacity flex items-center"
+              aria-label={`Carrito`}
             >
-              <ShoppingCart className="w-5 h-5 sm:w-6 sm:h-6 text-nuditos-marron-oscuro group-hover:scale-110 transition-transform" />
+              <ShoppingCart className="w-5 h-5 sm:w-6 sm:h-6" />
               {totalItems > 0 && (
-                <span
-                  className="absolute -top-1 -right-1 min-w-[20px] h-5 bg-nuditos-marron-oscuro text-white text-[10px] rounded-full flex items-center justify-center font-bold shadow-md border-2 border-white px-1 animate-pulse"
-                  aria-label={`${totalItems} items in cart`}
-                >
+                <span className="absolute -top-1 -right-1 min-w-[20px] h-5 bg-black text-white text-[10px] rounded-full flex items-center justify-center font-bold px-1">
                   {totalItems}
                 </span>
               )}
             </Link>
-
-            {/* Mobile Menu Button */}
-            <button
-              onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="md:hidden p-3 rounded-full bg-nuditos-marron/5 transition-all duration-300 focus-soft hover:bg-nuditos-marron/10 min-h-[44px] min-w-[44px] flex items-center justify-center"
-              aria-label="Menú"
-              aria-expanded={isMenuOpen}
-              aria-controls="mobile-menu"
-            >
-              {isMenuOpen ? (
-                <X className="w-5 h-5 text-nuditos-marron-oscuro" />
-              ) : (
-                <Menu className="w-5 h-5 text-nuditos-marron-oscuro" />
-              )}
-            </button>
           </div>
         </div>
+
+        {/* Mobile Search - Visible only when search toggled on mobile */}
+        {showSearch && (
+          <div className="sm:hidden px-4 mt-2 pb-2">
+            <input
+              type="search"
+              placeholder="Buscar..."
+              className="w-full px-4 py-2 border border-gray-200 rounded-md text-sm outline-none"
+              autoFocus
+            />
+          </div>
+        )}
 
         {/* Mobile Menu Dropdown */}
         <div
           id="mobile-menu"
           ref={menuRef}
-          className={`md:hidden overflow-hidden transition-all duration-500 ease-in-out ${isMenuOpen ? 'max-h-screen opacity-100' : 'max-h-0 opacity-0'}`}
-          role="menu"
-          aria-hidden={!isMenuOpen}
+          className={`lg:hidden overflow-hidden transition-all duration-300 ease-in-out bg-white absolute w-full border-b border-gray-100 shadow-sm ${isMenuOpen ? 'max-h-screen opacity-100 py-4' : 'max-h-0 opacity-0'}`}
         >
-          <ul className="px-6 pb-6 pt-2 space-y-2">
+          <ul className="px-6 space-y-4">
             {navLinks.map((link) => (
               <li key={link.href}>
                 <Link
                   href={link.href}
                   onClick={() => setIsMenuOpen(false)}
-                  className={`block py-4 px-4 font-bold rounded-2xl transition-all text-center min-h-[44px] flex items-center justify-center ${
-                    isActive(link.href)
-                      ? 'bg-nuditos-marron text-white'
-                      : 'text-nuditos-marron-oscuro hover:bg-nuditos-marron/5'
+                  className={`block text-sm tracking-widest uppercase font-medium ${
+                    isActive(link.href) ? 'text-black font-bold' : 'text-gray-600'
                   }`}
-                  role="menuitem"
-                  aria-current={isActive(link.href) ? 'page' : undefined}
                 >
                   {link.label}
                 </Link>
@@ -212,6 +199,6 @@ export default function Navbar() {
           </ul>
         </div>
       </nav>
-    </div>
+    </header>
   );
 }
