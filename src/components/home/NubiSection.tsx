@@ -26,6 +26,14 @@ const values = [
   },
 ];
 
+const nubiImages = [
+  '/nubi/IMG_3448.jpeg',
+  '/nubi/IMG_3421.jpeg',
+  '/nubi/IMG_3453.jpeg',
+  '/nubi/IMG_3435.jpeg',
+  '/nubi/IMG_3412.jpeg',
+];
+
 export default function NubiSection() {
   return (
     <section className="py-16 sm:py-24 bg-gradient-to-b from-nuditos-crema to-white" aria-labelledby="nubi-heading">
@@ -36,20 +44,17 @@ export default function NubiSection() {
           {/* Pasarela a la derecha (Fondo) */}
           <div className="absolute inset-0 w-full h-full overflow-hidden opacity-30 pointer-events-none flex items-center">
             <div className="flex w-[300%] sm:w-[200%] lg:w-[150%] animate-marquee-right">
-              {/* Doble set de imágenes para el bucle (6 + 6) */}
-              {[...Array(6), ...Array(6)].map((_, i) => (
+              {/* Múltiple set de imágenes para asegurar un bucle infinito continuo (5 * 3) */}
+              {[...nubiImages, ...nubiImages, ...nubiImages].map((src, i) => (
                 <div 
                   key={i} 
                   className="w-56 sm:w-64 md:w-80 h-72 sm:h-80 md:h-96 mx-3 sm:mx-4 flex-shrink-0 bg-nuditos-crema/40 backdrop-blur-sm border border-nuditos-marron/5 rounded-[2rem] sm:rounded-[2.5rem] overflow-hidden relative"
                 >
-                  {/* Placeholder vacío decorativo */}
-                  <div className="absolute inset-0 bg-gradient-to-br from-nuditos-beige/20 to-nuditos-crema/20 flex items-center justify-center">
-                    <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-white/30 flex items-center justify-center shadow-inner">
-                      <svg className="w-8 h-8 sm:w-10 sm:h-10 text-nuditos-marron/30" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-5-9c.83 0 1.5-.67 1.5-1.5S7.83 8 7 8s-1.5.67-1.5 1.5S6.17 11 7 11zm3.5 3c-.83 0-1.5-.67-1.5-1.5S9.67 11 10.5 11s1.5.67 1.5 1.5-.67 1.5-1.5 1.5zm3.5-3c-.83 0-1.5-.67-1.5-1.5S13.17 8 14 8s1.5.67 1.5 1.5-.67 1.5-1.5 1.5zm3.5 3c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/>
-                      </svg>
-                    </div>
-                  </div>
+                  <img 
+                    src={src} 
+                    alt={`Nubi ${i + 1}`} 
+                    className="w-full h-full object-cover"
+                  />
                 </div>
               ))}
             </div>

@@ -1,67 +1,30 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import { Check, HandHeart, Shield, AlertCircle, ArrowLeft } from 'lucide-react';
+import { useState } from 'react';
+import { HandHeart, Shield, ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
 import Button from '@/src/components/Button';
-import { useCart } from '@/src/context/CartContext';
 import { ProductDetail } from '@/src/data/products';
 
-interface ToastProps {
-  message: string;
-  type: 'success' | 'error';
-  onClose: () => void;
-}
-
-const Toast = ({ message, type, onClose }: ToastProps) => {
-  useEffect(() => {
-    const timer = setTimeout(onClose, 3000);
-    return () => clearTimeout(timer);
-  }, [onClose]);
-
-  return (
-    <div
-      role="alert"
-      className={`fixed bottom-6 right-6 z-50 flex items-center gap-3 px-6 py-4 rounded-2xl shadow-lg transition-all duration-300 animate-slide-up ${
-        type === 'success'
-          ? 'bg-nuditos-verde-claro text-nuditos-marron-oscuro'
-          : 'bg-red-500 text-white'
-      }`}
-    >
-      {type === 'success' ? <Check className="w-5 h-5" /> : <AlertCircle className="w-5 h-5" />}
-      <span className="font-medium">{message}</span>
-    </div>
-  );
-};
-
 export default function ProductDetailClient({ product }: { product: ProductDetail }) {
-  const { addItem } = useCart();
   const [quantity, setQuantity] = useState(1);
-  const [isAdding, setIsAdding] = useState(false);
-  const [toast, setToast] = useState<{ message: string; type: 'success' | 'error' } | null>(null);
   
   const images = [product.image, ...(product.gallery || [])];
   const [activeImage, setActiveImage] = useState(images[0]);
 
-  const handleAddToCart = () => {
-    setIsAdding(true);
-    addItem({
-      name: product.name,
-      description: product.description,
-      price: product.price,
-      quantity,
-      emoji: '🎀',
-      size: product.category,
-      color: 'Natural',
-      outfit: 'Ninguno',
-      image: product.image,
-    });
-    setToast({ message: '¡Producto agregado al carrito!', type: 'success' });
-    setTimeout(() => setIsAdding(false), 500);
+  const handleBuyOnWhatsApp = () => {
+    const message = `¡Hola! Me gustaría comprar el producto:
+- Producto: ${product.name}
+- Categoría: ${product.category}
+- Cantidad: ${quantity}
+- Precio unitario: $${product.price.toLocaleString('es-CO')}
+- Total: $${(product.price * quantity).toLocaleString('es-CO')}`;
+    const whatsappUrl = `https://wa.me/573053655297?text=${encodeURIComponent(message)}`;
+    window.open(whatsappUrl, '_blank');
   };
 
   return (
-    <div className="min-h-screen bg-nuditos-crema pb-20 pt-24 sm:pt-32">
+    <div className="min-h-screen bg-nuditos-crema pb-20 pt-[100px] sm:pt-[112px]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Breadcrumb navegación */}
@@ -77,14 +40,14 @@ export default function ProductDetailClient({ product }: { product: ProductDetai
           <span className="text-nuditos-marron-oscuro font-medium line-clamp-1">{product.name}</span>
         </nav>
 
-        <div className="grid lg:grid-cols-2 gap-12 lg:gap-20">
+        <div className="grid lg:grid-cols-2 gap-8 lg:gap-20">
           {/* Galería de Imágenes */}
-          <div className="space-y-6">
-            <div className="aspect-[4/5] rounded-[3rem] overflow-hidden bg-white shadow-medium relative group">
+          <div className="space-y-4">
+            <div className="w-full rounded-3xl overflow-hidden bg-white shadow-medium relative group" style={{aspectRatio: '3/4', maxHeight: '70vh'}}>
               <img
                 src={activeImage}
                 alt={product.name}
-                className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                className="w-full h-full object-contain transition-transform duration-500 group-hover:scale-105"
               />
               <div className="absolute top-6 left-6 flex flex-col gap-2 z-10">
                 {product.isNew && (
@@ -127,13 +90,8 @@ export default function ProductDetailClient({ product }: { product: ProductDetai
               <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-nuditos-marron-oscuro leading-tight tracking-tight">
                 {product.name}
               </h1>
-              <div className="text-3xl sm:text-4xl font-bold text-nuditos-amarillo drop-shadow-sm flex items-center gap-4">
+              <div className="text-3xl sm:text-4xl font-bold text-nuditos-amarillo drop-shadow-sm">
                 ${product.price.toLocaleString('es-CO')}
-                {product.rating && (
-                  <span className="text-sm bg-black/10 text-nuditos-marron-oscuro px-3 py-1 rounded-full flex items-center font-medium">
-                    ⭐ {product.rating}
-                  </span>
-                )}
               </div>
             </div>
 
@@ -160,16 +118,14 @@ export default function ProductDetailClient({ product }: { product: ProductDetai
                 <div className="flex items-center bg-white/10 rounded-2xl border border-white/20 p-1.5 isolate">
                   <button
                     onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                    disabled={isAdding}
-                    className="w-12 h-12 flex items-center justify-center text-white hover:bg-white/20 active:bg-white/30 rounded-xl transition-all disabled:opacity-50"
+                    className="w-12 h-12 flex items-center justify-center text-white hover:bg-white/20 active:bg-white/30 rounded-xl transition-all"
                   >
                     <span className="text-2xl leading-none font-medium">−</span>
                   </button>
                   <span className="w-14 text-center font-bold text-xl">{quantity}</span>
                   <button
                     onClick={() => setQuantity(quantity + 1)}
-                    disabled={isAdding}
-                    className="w-12 h-12 flex items-center justify-center text-white hover:bg-white/20 active:bg-white/30 rounded-xl transition-all disabled:opacity-50"
+                    className="w-12 h-12 flex items-center justify-center text-white hover:bg-white/20 active:bg-white/30 rounded-xl transition-all"
                   >
                     <span className="text-2xl leading-none font-medium">+</span>
                   </button>
@@ -177,12 +133,11 @@ export default function ProductDetailClient({ product }: { product: ProductDetai
               </div>
 
               <Button
-                onClick={handleAddToCart}
-                disabled={isAdding}
-                className="w-full justify-center bg-white text-nuditos-marron-oscuro hover:bg-nuditos-crema active:bg-nuditos-beige text-lg h-16 rounded-2xl transition-all shadow-lg"
+                onClick={handleBuyOnWhatsApp}
+                className="w-full justify-center bg-[#25D366] text-white hover:bg-[#20ba5a] active:bg-[#1da850] text-lg h-16 rounded-2xl transition-all shadow-lg border-none"
                 size="lg"
               >
-                {isAdding ? 'Agregando...' : 'Agregar a mi carrito'}
+                Comprar por WhatsApp
               </Button>
             </div>
             
@@ -206,8 +161,6 @@ export default function ProductDetailClient({ product }: { product: ProductDetai
           </div>
         </div>
       </div>
-
-      {toast && <Toast message={toast.message} type={toast.type} onClose={() => setToast(null)} />}
     </div>
   );
 }

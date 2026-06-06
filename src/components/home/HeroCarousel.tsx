@@ -7,7 +7,6 @@ import Image from 'next/image';
 const slides = [
   { id: 1, imagePath: '/banners/banner1.jpg', bgFallback: 'bg-gray-200' },
   { id: 2, imagePath: '/banners/banner2.jpg', bgFallback: 'bg-gray-300' },
-  { id: 3, imagePath: '/banners/banner3.jpg', bgFallback: 'bg-gray-400' },
 ];
 
 const AUTOPLAY_INTERVAL = 6000;
@@ -70,7 +69,7 @@ export default function HeroCarousel() {
 
   return (
     <section
-      className="relative overflow-hidden w-full h-[60vh] sm:h-[70vh] lg:h-[80vh] mt-[100px] sm:mt-[110px]"
+      className="relative overflow-hidden w-full aspect-[3/2] md:aspect-auto md:h-[75vh] lg:h-[85vh] max-h-[900px] mt-[100px] sm:mt-[112px]"
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
       role="region"
@@ -81,8 +80,7 @@ export default function HeroCarousel() {
         <div
           key={slide.id}
           className={`
-            absolute inset-0 transition-opacity duration-700 ease-out flex items-center justify-center
-            ${slide.bgFallback} text-black/50
+            absolute inset-0 transition-opacity duration-700 ease-out
             ${index === currentSlide ? 'opacity-100 z-10' : 'opacity-0 z-0 pointer-events-none'}
           `}
           aria-hidden={index !== currentSlide}
@@ -90,21 +88,25 @@ export default function HeroCarousel() {
           aria-roledescription="slide"
           aria-label={`Banner ${index + 1}`}
         >
-          {/* Instrucciones para el usuario; la imagen se mostrará por encima si existe */}
-          <div className="absolute inset-0 flex flex-col items-center justify-center text-center p-6 z-0">
-            <h2 className="text-xl sm:text-2xl font-bold mb-2">Espacio para Banner {slide.id}</h2>
-            <p className="text-sm">Guarda la imagen en <strong>public/banners/banner{slide.id}.jpg</strong></p>
+          {/* Capa 1: Fondo borroso para llenar los espacios sin recortes abruptos */}
+          <div className="absolute inset-0 z-0 overflow-hidden bg-nuditos-crema">
+            <img 
+              src={slide.imagePath} 
+              alt="" 
+              className="w-full h-full object-cover blur-3xl scale-110 opacity-60"
+              aria-hidden="true"
+            />
+            {/* Overlay sutil para suavizar el fondo */}
+            <div className="absolute inset-0 bg-white/20 backdrop-blur-[2px]"></div>
           </div>
 
-          {/* Imagen del banner - oculta cualquier error si no existe la imagen con object-cover y div relativo */}
-          <div className="absolute inset-0 z-10">
-            {/* Usa un un tag picture/img nativo para mejor manejo de errores temporales antes de subirlas */}
+          {/* Capa 2: Imagen principal sin recortes (object-contain) */}
+          <div className="absolute inset-0 z-10 flex items-center justify-center p-0 sm:p-4">
             <img 
               src={slide.imagePath} 
               alt={`Banner Promocional ${slide.id}`} 
-              className="w-full h-full object-cover"
+              className="w-full h-full object-contain sm:drop-shadow-2xl"
               onError={(e) => {
-                // Oculta la imagen si está rota para mostrar el mensaje de abajo
                 e.currentTarget.style.display = 'none';
               }}
             />
@@ -114,20 +116,23 @@ export default function HeroCarousel() {
 
       {/* Controls */}
       <div
-        className="absolute bottom-4 sm:bottom-6 left-1/2 -translate-x-1/2 flex items-center gap-3 sm:gap-4 z-20"
+        className="absolute bottom-6 left-1/2 -translate-x-1/2 flex items-center gap-3 z-20"
         role="tablist"
         aria-label="Navegación del carrusel"
       >
         <button
-          onClick={prevSlide}
-          className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-white/60 backdrop-blur-md flex items-center justify-center hover:bg-white hover:scale-105 active:scale-95 transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black shadow-soft"
-          aria-label="Slide anterior"
-          disabled={isPaused}
+          onClick={() => setIsPaused(!isPaused)}
+          className="flex items-center justify-center transition-all duration-200 hover:opacity-70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black"
+          aria-label={isPaused ? 'Reproducir' : 'Pausar'}
         >
-          <ChevronLeft className="w-5 h-5 sm:w-6 sm:h-6 text-black" />
+          {isPaused ? (
+            <Play className="w-4 h-4 text-black fill-black" />
+          ) : (
+            <Pause className="w-4 h-4 text-black fill-black" />
+          )}
         </button>
 
-        <div className="flex gap-2" role="group" aria-label="Indicadores de slide">
+        <div className="flex gap-2 items-center" role="group" aria-label="Indicadores de slide">
           {slides.map((_, index) => (
             <button
               key={index}
@@ -135,8 +140,8 @@ export default function HeroCarousel() {
               className={`
                 rounded-full transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black
                 ${index === currentSlide
-                  ? 'w-8 h-2 bg-black'
-                  : 'w-2 h-2 bg-black/40 hover:bg-black/60'
+                  ? 'w-2 h-2 bg-black'
+                  : 'w-1.5 h-1.5 bg-black/40 hover:bg-black/60'
                 }
               `}
               aria-label={`Ir al slide ${index + 1}`}
@@ -146,27 +151,6 @@ export default function HeroCarousel() {
             />
           ))}
         </div>
-
-        <button
-          onClick={nextSlide}
-          className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-white/60 backdrop-blur-md flex items-center justify-center hover:bg-white hover:scale-105 active:scale-95 transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black shadow-soft"
-          aria-label="Siguiente slide"
-          disabled={isPaused}
-        >
-          <ChevronRight className="w-5 h-5 sm:w-6 sm:h-6 text-black" />
-        </button>
-
-        <button
-          onClick={() => setIsPaused(!isPaused)}
-          className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-white/60 backdrop-blur-md flex items-center justify-center hover:bg-white hover:scale-105 active:scale-95 transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black shadow-soft"
-          aria-label={isPaused ? 'Reproducir' : 'Pausar'}
-        >
-          {isPaused ? (
-            <Play className="w-5 h-5 sm:w-6 sm:h-6 text-black" />
-          ) : (
-            <Pause className="w-5 h-5 sm:w-6 sm:h-6 text-black" />
-          )}
-        </button>
       </div>
 
       {/* Progress bar */}

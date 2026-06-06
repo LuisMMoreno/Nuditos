@@ -1,66 +1,64 @@
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
-import { Heart, Truck, Shield, Link as LinkIcon, HandHeart, Check, AlertCircle } from 'lucide-react';
+import { Heart, Truck, Shield, Link as LinkIcon, HandHeart, AlertCircle } from 'lucide-react';
 import Button from '@/src/components/Button';
-import { useCart } from '@/src/context/CartContext';
 
 const models = [
   {
     id: 'sin-peso',
     name: 'Clásico (Sin peso)',
-    price: 45,
+    price: 100000,
     description: 'Ligero y abrazable, ideal para compañía diaria y para llevar a todos lados.'
   },
   {
     id: 'con-peso',
     name: 'Terapéutico (Con peso)',
-    price: 65,
+    price: 150000,
     description: 'Con peso distribuido (aprox 1kg). Estimula el sistema nervioso brindando calma profunda y reduciendo la ansiedad.'
   },
 ];
 
 const outfits = [
   { id: 'ninguno', name: 'Sin ropita', icon: 'rabbit', price: 0 },
-  { id: 'tiburon', name: 'Tiburón', icon: 'shark', price: 15 },
-  { id: 'sapito', name: 'Sapito', icon: 'frog', price: 12 },
-  { id: 'gatito', name: 'Gatito', icon: 'cat', price: 12 },
+  { id: 'tiburon', name: 'Saco Tiburón (Azul)', icon: 'shark', price: 30000 },
+  { id: 'sapito', name: 'Saco Sapito (Verde)', icon: 'frog', price: 30000 },
+  { id: 'gatito', name: 'Saco Gatito (Negro)', icon: 'cat', price: 30000 },
 ];
+
+const outfitImages: Record<string, string[]> = {
+  ninguno: [
+    '/nubi/IMG_3435.jpeg',
+    '/nubi/IMG_3431.jpeg',
+    '/nubi/IMG_3432.jpeg',
+    '/nubi/IMG_3436.jpeg',
+  ],
+  sapito: [
+    '/nubi/IMG_3421.jpeg',
+    '/nubi/IMG_3417.jpeg',
+    '/nubi/IMG_3418.jpeg',
+    '/nubi/IMG_3420.jpeg',
+    '/nubi/IMG_3429.jpeg',
+    '/nubi/IMG_3412.jpeg',
+  ],
+  gatito: [
+    '/nubi/IMG_3448.jpeg',
+    '/nubi/IMG_3439.jpeg',
+    '/nubi/IMG_3440.jpeg',
+    '/nubi/IMG_3442.jpeg',
+    '/nubi/IMG_3446.jpeg',
+  ],
+  tiburon: [
+    '/nubi/IMG_3453.jpeg',
+    '/nubi/IMG_3452.jpeg',
+    '/nubi/IMG_3454.jpeg',
+    '/nubi/IMG_3456.jpeg',
+    '/nubi/IMG_3458.jpeg',
+  ],
+};
 
 const NAME_REGEX = /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/;
 const MAX_NAME_LENGTH = 20;
-
-interface ToastProps {
-  message: string;
-  type: 'success' | 'error';
-  onClose: () => void;
-}
-
-const Toast = ({ message, type, onClose }: ToastProps) => {
-  useEffect(() => {
-    const timer = setTimeout(onClose, 3000);
-    return () => clearTimeout(timer);
-  }, [onClose]);
-
-  return (
-    <div
-      role="alert"
-      aria-live="polite"
-      className={`fixed bottom-6 right-6 z-50 flex items-center gap-3 px-6 py-4 rounded-2xl shadow-lg transition-all duration-300 animate-slide-up ${
-        type === 'success'
-          ? 'bg-nuditos-verde-claro text-nuditos-marron-oscuro'
-          : 'bg-red-500 text-white'
-      }`}
-    >
-      {type === 'success' ? (
-        <Check className="w-5 h-5" />
-      ) : (
-        <AlertCircle className="w-5 h-5" />
-      )}
-      <span className="font-medium">{message}</span>
-    </div>
-  );
-};
 
 const OutfitIcon = ({ icon, className = "w-12 h-12" }: { icon: string; className?: string }) => {
   const icons: Record<string, React.ReactNode> = {
@@ -102,16 +100,19 @@ const OutfitIcon = ({ icon, className = "w-12 h-12" }: { icon: string; className
 };
 
 export default function NubiPage() {
-  const { addItem } = useCart();
   const [selectedModel, setSelectedModel] = useState(models[0]);
   const [selectedOutfit, setSelectedOutfit] = useState(outfits[0]);
   const [customName, setCustomName] = useState('');
   const [nameError, setNameError] = useState('');
   const [quantity, setQuantity] = useState(1);
-  const [isAdding, setIsAdding] = useState(false);
-  const [toast, setToast] = useState<{ message: string; type: 'success' | 'error' } | null>(null);
-  const [focusedField, setFocusedField] = useState<string | null>(null);
   const nameInputRef = useRef<HTMLInputElement>(null);
+
+  const currentImages = outfitImages[selectedOutfit.id] || outfitImages.ninguno;
+  const [activeImage, setActiveImage] = useState(currentImages[0]);
+
+  useEffect(() => {
+    setActiveImage(currentImages[0]);
+  }, [selectedOutfit]);
 
   const totalPrice = (selectedModel.price + selectedOutfit.price) * quantity;
 
@@ -134,28 +135,20 @@ export default function NubiPage() {
     setCustomName(value);
   };
 
-  const handleAddToCart = () => {
+  const handleBuyOnWhatsApp = () => {
     if (customName && !validateName(customName)) {
-      setToast({ message: 'Corrige el nombre antes de continuar', type: 'error' });
       nameInputRef.current?.focus();
       return;
     }
 
-    setIsAdding(true);
-    addItem({
-      name: `Nubi ${selectedModel.name}`,
-      description: selectedModel.description,
-      price: selectedModel.price + selectedOutfit.price,
-      size: selectedModel.id === 'con-peso' ? 'Terapéutico (1kg)' : 'Clásico (25cm)',
-      color: 'Natural',
-      outfit: selectedOutfit.name,
-      customName,
-      quantity,
-      emoji: selectedOutfit.icon,
-    });
-
-    setToast({ message: '¡Nubi agregado al carrito!', type: 'success' });
-    setTimeout(() => setIsAdding(false), 500);
+    const message = `¡Hola! Me gustaría comprar a Nubi:
+- Modelo: ${selectedModel.name}
+- Ropita: ${selectedOutfit.name}
+${customName ? `- Nombre para mi Nubi: "${customName}"\n` : ''}- Cantidad: ${quantity}
+- Total: $${totalPrice.toLocaleString('es-CO')}`;
+    
+    const whatsappUrl = `https://wa.me/573053655297?text=${encodeURIComponent(message)}`;
+    window.open(whatsappUrl, '_blank');
   };
 
   const handleKeyDown = (e: React.KeyboardEvent, action: () => void) => {
@@ -189,7 +182,7 @@ export default function NubiPage() {
   ];
 
   return (
-    <div className="min-h-screen bg-nuditos-crema pb-20">
+    <div className="min-h-screen bg-nuditos-crema pb-20 pt-24 sm:pt-32">
       {/* Header */}
       <header className="bg-white shadow-soft" role="banner">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
@@ -218,15 +211,15 @@ export default function NubiPage() {
           {/* Image Section */}
           <div className="space-y-6">
             <div
-              className={`aspect-[4/5] rounded-3xl bg-gradient-to-br from-nuditos-crema via-white to-nuditos-beige shadow-medium flex flex-col items-center justify-center transition-all duration-300 relative overflow-hidden text-center`}
+              className="aspect-[4/5] rounded-[2.5rem] overflow-hidden bg-white shadow-medium relative group"
               role="img"
               aria-label={`Imagen de Nubi modelo ${selectedModel.name} ${selectedOutfit.name !== 'Sin ropita' ? 'con outfit ' + selectedOutfit.name : ''}`}
             >
-              {/* Professional SVG placeholder - replaces emoji */}
-              <div className="w-40 h-40 sm:w-56 sm:h-56 mb-4 sm:mb-8 animate-gentle-float z-10 relative flex items-center justify-center">
-                <div className="absolute inset-0 bg-gradient-to-br from-nuditos-rosa/20 to-nuditos-verde-claro/20 rounded-full blur-xl" />
-                <OutfitIcon icon={selectedOutfit.icon} className="w-24 h-24 sm:w-40 sm:h-40 text-nuditos-marron-oscuro relative z-10" />
-              </div>
+              <img
+                src={activeImage}
+                alt={`Nubi ${selectedOutfit.name}`}
+                className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+              />
 
               <div className="absolute top-4 sm:top-6 left-4 sm:left-6 right-4 sm:right-6 flex flex-col sm:flex-row gap-2 items-start sm:items-start justify-between z-10">
                  <span className="bg-white/90 backdrop-blur-sm px-3 sm:px-4 py-2 rounded-2xl text-nuditos-marron-oscuro font-bold text-xs sm:text-sm shadow-sm">
@@ -240,17 +233,30 @@ export default function NubiPage() {
               </div>
 
               {customName && (
-                <div className="absolute bottom-6 sm:bottom-10 z-10 bg-white/90 backdrop-blur px-6 sm:px-8 py-2 sm:py-3 rounded-full shadow-soft opacity-100 transition-opacity">
-                  <p className="text-nuditos-marron-oscuro font-bold text-lg sm:text-2xl">
+                <div className="absolute bottom-6 sm:bottom-10 left-1/2 -translate-x-1/2 z-10 bg-white/95 backdrop-blur px-6 sm:px-8 py-2 sm:py-3 rounded-full shadow-medium text-center">
+                  <p className="text-nuditos-marron-oscuro font-bold text-lg sm:text-xl leading-none">
                     "{customName}"
                   </p>
                 </div>
               )}
-
-              {/* Decorative backgrounds */}
-              <div className="absolute -bottom-20 -right-20 w-48 h-48 sm:w-64 sm:h-64 bg-nuditos-rosa opacity-20 rounded-full blur-3xl z-0" />
-              <div className="absolute -top-20 -left-20 w-48 h-48 sm:w-64 sm:h-64 bg-nuditos-verde-claro opacity-20 rounded-full blur-3xl z-0" />
             </div>
+
+            {/* Thumbnails */}
+            {currentImages.length > 1 && (
+              <div className="flex gap-4 overflow-x-auto pb-2 scrollbar-hide">
+                {currentImages.map((img, idx) => (
+                  <button
+                    key={idx}
+                    onClick={() => setActiveImage(img)}
+                    className={`relative w-20 h-20 sm:w-24 sm:h-24 rounded-2xl overflow-hidden flex-shrink-0 border-2 transition-all duration-200 focus:outline-none focus:ring-4 focus:ring-nuditos-marron/20 ${
+                      activeImage === img ? 'border-nuditos-marron scale-100 shadow-md' : 'border-transparent scale-95 opacity-70 hover:opacity-100 hover:scale-100'
+                    }`}
+                  >
+                    <img src={img} alt={`Vista ${idx + 1}`} className="w-full h-full object-cover" />
+                  </button>
+                ))}
+              </div>
+            )}
           </div>
 
           {/* Customization Section */}
@@ -280,7 +286,7 @@ export default function NubiPage() {
                         {model.name}
                       </span>
                       <span className={`font-bold text-sm sm:text-base ${selectedModel.id === model.id ? 'text-nuditos-marron-oscuro' : 'text-nuditos-marron'}`}>
-                        ${model.price}
+                        ${model.price.toLocaleString('es-CO')} COP
                       </span>
                     </div>
                     <p className="text-xs sm:text-sm text-nuditos-marron leading-relaxed">
@@ -318,7 +324,7 @@ export default function NubiPage() {
                       {outfit.name}
                     </span>
                     {outfit.price > 0 && (
-                      <span className="block text-xs sm:text-sm text-nuditos-marron font-medium mt-1">+${outfit.price}</span>
+                      <span className="block text-xs sm:text-sm text-nuditos-marron font-medium mt-1">+${outfit.price.toLocaleString('es-CO')}</span>
                     )}
                   </button>
                 ))}
@@ -341,8 +347,6 @@ export default function NubiPage() {
                   type="text"
                   value={customName}
                   onChange={handleNameChange}
-                  onFocus={() => setFocusedField('name')}
-                  onBlur={() => setFocusedField(null)}
                   placeholder="Ej. Copo, Luna, Miel..."
                   maxLength={MAX_NAME_LENGTH}
                   aria-invalid={!!nameError}
@@ -365,13 +369,13 @@ export default function NubiPage() {
               </div>
             </div>
 
-            {/* Add to Cart Section */}
+            {/* Checkout Section */}
             <div className="bg-nuditos-marron-oscuro rounded-3xl p-5 sm:p-6 lg:p-8 shadow-medium text-white" role="region" aria-label="Resumen de compra">
               <div className="flex justify-between items-end mb-6 border-b border-white/10 pb-6">
                 <div>
                   <p className="text-white/70 mb-1 text-sm sm:text-base">Total a pagar</p>
                   <div className="text-2xl sm:text-3xl font-bold flex items-center gap-2">
-                    <span>${totalPrice}</span>
+                    <span>${totalPrice.toLocaleString('es-CO')}</span>
                     <span className="text-xs sm:text-sm font-normal text-white/60 bg-white/10 px-2 py-1 rounded-md">Envío Gratis</span>
                   </div>
                 </div>
@@ -379,9 +383,8 @@ export default function NubiPage() {
                 <div className="flex items-center bg-white/10 rounded-2xl border border-white/20 p-1" role="group" aria-label="Cantidad">
                   <button
                     onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                    disabled={isAdding}
                     aria-label="Disminuir cantidad"
-                    className="w-11 h-11 sm:w-12 sm:h-12 flex items-center justify-center text-white hover:bg-white/20 active:bg-white/30 rounded-xl transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed min-w-[44px] min-h-[44px]"
+                    className="w-11 h-11 sm:w-12 sm:h-12 flex items-center justify-center text-white hover:bg-white/20 active:bg-white/30 rounded-xl transition-all duration-200 min-w-[44px] min-h-[44px]"
                   >
                     <span className="text-xl font-bold">−</span>
                   </button>
@@ -390,9 +393,8 @@ export default function NubiPage() {
                   </span>
                   <button
                     onClick={() => setQuantity(quantity + 1)}
-                    disabled={isAdding}
                     aria-label="Aumentar cantidad"
-                    className="w-11 h-11 sm:w-12 sm:h-12 flex items-center justify-center text-white hover:bg-white/20 active:bg-white/30 rounded-xl transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed min-w-[44px] min-h-[44px]"
+                    className="w-11 h-11 sm:w-12 sm:h-12 flex items-center justify-center text-white hover:bg-white/20 active:bg-white/30 rounded-xl transition-all duration-200 min-w-[44px] min-h-[44px]"
                   >
                     <span className="text-xl font-bold">+</span>
                   </button>
@@ -401,23 +403,11 @@ export default function NubiPage() {
 
               <div className="relative">
                 <Button
-                  onClick={handleAddToCart}
-                  disabled={isAdding}
-                  aria-busy={isAdding}
-                  className="w-full justify-center bg-white text-nuditos-marron-oscuro hover:bg-nuditos-crema active:bg-nuditos-beige text-base sm:text-lg h-14 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200"
+                  onClick={handleBuyOnWhatsApp}
+                  className="w-full justify-center bg-[#25D366] text-white hover:bg-[#20ba5a] active:bg-[#1da850] text-base sm:text-lg h-14 transition-all duration-200 border-none shadow-lg"
                   size="lg"
                 >
-                  {isAdding ? (
-                    <span className="flex items-center gap-2">
-                      <svg className="animate-spin h-5 w-5" viewBox="0 0 24 24">
-                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
-                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
-                      </svg>
-                      Agregando...
-                    </span>
-                  ) : (
-                    'Agregar al Carrito'
-                  )}
+                  Comprar por WhatsApp
                 </Button>
               </div>
             </div>
@@ -474,15 +464,6 @@ export default function NubiPage() {
         </div>
 
       </div>
-
-      {/* Toast Notification */}
-      {toast && (
-        <Toast
-          message={toast.message}
-          type={toast.type}
-          onClose={() => setToast(null)}
-        />
-      )}
     </div>
   );
 }

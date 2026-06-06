@@ -4,7 +4,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { useState, useEffect, useRef } from 'react';
 import { usePathname } from 'next/navigation';
-import { ShoppingCart, Menu, X, Search, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Menu, X, Search, ChevronLeft, ChevronRight } from 'lucide-react';
 import { useCart } from '@/src/context/CartContext';
 
 export default function Navbar() {
@@ -149,18 +149,22 @@ export default function Navbar() {
               )}
             </div>
 
-            <Link
-              href="/carrito"
-              className="relative p-2 hover:opacity-70 transition-opacity flex items-center"
-              aria-label={`Carrito`}
+            <a
+              href="https://wa.me/573053655297"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="p-1 hover:opacity-70 transition-opacity flex items-center"
+              aria-label="Contactar por WhatsApp"
             >
-              <ShoppingCart className="w-5 h-5 sm:w-6 sm:h-6" />
-              {totalItems > 0 && (
-                <span className="absolute -top-1 -right-1 min-w-[20px] h-5 bg-black text-white text-[10px] rounded-full flex items-center justify-center font-bold px-1">
-                  {totalItems}
-                </span>
-              )}
-            </Link>
+              <div className="relative w-7 h-7 sm:w-8 sm:h-8">
+                <Image
+                  src="/whatsapp.png"
+                  alt="WhatsApp"
+                  fill
+                  className="object-contain"
+                />
+              </div>
+            </a>
           </div>
         </div>
 
