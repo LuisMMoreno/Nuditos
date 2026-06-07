@@ -1,8 +1,7 @@
 'use client';
 
 import { Product } from './ProductCard';
-import { ShoppingBag, Star, Sparkles } from 'lucide-react';
-import { useState } from 'react';
+import { Star, Sparkles } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 
@@ -14,12 +13,6 @@ interface BentoCatalogueProps {
 }
 
 export default function BentoCatalogue({ products, categoryName, categoryDescription, emptyMessage = "Próximamente agregaremos más productos hermosos a esta colección." }: BentoCatalogueProps) {
-  const [isAdding, setIsAdding] = useState<number | null>(null);
-
-  const handleQuickAdd = (product: Product) => {
-    setIsAdding(product.id);
-    setTimeout(() => setIsAdding(null), 500);
-  };
 
   if (products.length === 0) {
     return (
@@ -126,15 +119,6 @@ export default function BentoCatalogue({ products, categoryName, categoryDescrip
                       )}
                     </div>
                   </div>
-
-                  {/* Accion Flotante Círculo */}
-                  <button
-                    onClick={(e) => { e.preventDefault(); handleQuickAdd(product); }}
-                    className={`w-14 h-14 rounded-full bg-white text-nuditos-marron flex items-center justify-center transition-all duration-300 hover:bg-nuditos-rosa hover:scale-110 shadow-lg ${isAdding === product.id ? 'scale-90 bg-nuditos-verde text-white' : ''}`}
-                    aria-label={`Agregar ${product.name} al carrito`}
-                  >
-                    <ShoppingBag className="w-6 h-6" />
-                  </button>
                 </div>
               </div>
             </div>

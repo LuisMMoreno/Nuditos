@@ -54,7 +54,6 @@ export default function Navbar() {
     { href: '/monas', label: 'Moñas' },
     { href: '/bolsos', label: 'Bolsos' },
     { href: '/llaveros', label: 'Llaveros' },
-    { href: '/flores', label: 'Flores' },
     { href: '/diademas', label: 'Diademas' },
   ];
 
@@ -68,7 +67,7 @@ export default function Navbar() {
           <ChevronLeft className="w-4 h-4 sm:w-5 sm:h-5" />
         </button>
         <div className="text-center flex-1 font-medium tracking-wide">
-          ENVÍO GRATIS EN FUSAGASUGA
+          🔥 ENVÍO GRATIS EN FUSAGASUGA 🔥
         </div>
         <button aria-label="Siguiente promoción" className="opacity-80 hover:opacity-100 transition-opacity">
           <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5" />

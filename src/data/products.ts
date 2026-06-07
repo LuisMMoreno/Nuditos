@@ -202,7 +202,7 @@ export const productsData: ProductDetail[] = [
     name: 'Llavero Abejita',
     description: 'Tierno llavero en forma de abejita, un anclaje sensorial compacto de bolsillo.',
     price: 8000,
-    image: '/productos/llaveros/abejas/1.jpeg',
+    image: '/productos/llaveros/abejas/2.jpeg',
     category: 'Llaveros',
     story: [
       'Las pequeñas abejitas tejidas sirven como un recordatorio físico de calma en tus llaves o maleta.',
