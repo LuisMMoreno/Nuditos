@@ -75,7 +75,7 @@ export default function Navbar() {
       </div>
 
       <nav
-        className="w-full transition-all duration-300 border-b border-gray-100 py-2 shadow-sm"
+        className="w-full border-b border-gray-100 py-1 shadow-sm"
         role="navigation"
         aria-label="Main navigation"
       >
@@ -112,9 +112,9 @@ export default function Navbar() {
           {/* Center Area: Logo */}
           <div className="flex-shrink-0 flex justify-center items-center">
             <Link href="/" className="outline-none py-1 flex items-center justify-center">
-              <div className={`relative transition-all duration-500 ease-in-out ${scrolled ? 'w-24 h-10' : 'w-32 h-14'}`}>
+              <div className="relative w-12 h-12">
                 <Image
-                  src="/logo.png"
+                  src="/isologo_sin_fondo.png"
                   alt="Logo Nuditos"
                   fill
                   className="object-contain"

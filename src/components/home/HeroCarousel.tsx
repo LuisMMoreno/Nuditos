@@ -90,10 +90,11 @@ export default function HeroCarousel() {
         >
           {/* Capa 1: Fondo borroso para llenar los espacios sin recortes abruptos */}
           <div className="absolute inset-0 z-0 overflow-hidden bg-nuditos-crema">
-            <img 
+            <Image 
               src={slide.imagePath} 
               alt="" 
-              className="w-full h-full object-cover blur-3xl scale-110 opacity-60"
+              fill
+              className="object-cover blur-3xl scale-110 opacity-60"
               aria-hidden="true"
             />
             {/* Overlay sutil para suavizar el fondo */}
@@ -101,15 +102,17 @@ export default function HeroCarousel() {
           </div>
 
           {/* Capa 2: Imagen principal sin recortes (object-contain) */}
-          <div className="absolute inset-0 z-10 flex items-center justify-center p-0 sm:p-4">
-            <img 
-              src={slide.imagePath} 
-              alt={`Banner Promocional ${slide.id}`} 
-              className="w-full h-full object-contain sm:drop-shadow-2xl"
-              onError={(e) => {
-                e.currentTarget.style.display = 'none';
-              }}
-            />
+          <div className="absolute inset-0 z-10 p-0 sm:p-4">
+            <div className="relative w-full h-full">
+              <Image 
+                src={slide.imagePath} 
+                alt={`Banner Promocional ${slide.id}`} 
+                fill
+                priority={index === 0}
+                className="object-contain sm:drop-shadow-2xl"
+                sizes="100vw"
+              />
+            </div>
           </div>
         </div>
       ))}

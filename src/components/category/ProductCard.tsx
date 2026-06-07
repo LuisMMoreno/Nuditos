@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { ShoppingBag, Star } from 'lucide-react';
+import Image from 'next/image';
 
 export interface Product {
   id: number;
@@ -43,13 +44,14 @@ export default function ProductCard({ product, onQuickAdd }: ProductCardProps) {
       {/* Image Container */}
       <div className="relative aspect-square rounded-2xl bg-nuditos-crema mb-4 overflow-hidden">
         {/* Image/Emoji */}
-        <div className={`w-full h-full flex items-center justify-center transition-transform duration-500 ${isHovered ? 'scale-110' : 'scale-100'}`}>
+        <div className={`relative w-full h-full flex items-center justify-center transition-transform duration-500 ${isHovered ? 'scale-110' : 'scale-100'}`}>
           {product.image ? (
-            <img
+            <Image
               src={product.image}
               alt={product.name}
-              className="w-full h-full object-cover"
-              loading="lazy"
+              fill
+              className="object-cover"
+              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 33vw, 25vw"
             />
           ) : (
             <span className="text-5xl sm:text-6xl">{product.emoji}</span>

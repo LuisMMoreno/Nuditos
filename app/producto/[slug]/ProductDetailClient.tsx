@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { HandHeart, Shield, ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
+import Image from 'next/image';
 import Button from '@/src/components/Button';
 import { ProductDetail } from '@/src/data/products';
 
@@ -42,10 +43,13 @@ export default function ProductDetailClient({ product }: { product: ProductDetai
             {/* Imagen principal */}
             <div className="w-full rounded-2xl sm:rounded-3xl overflow-hidden bg-white shadow-medium relative group"
               style={{ aspectRatio: '4/5' }}>
-              <img
+              <Image
                 src={activeImage}
                 alt={product.name}
-                className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                fill
+                priority
+                className="object-cover transition-transform duration-500 group-hover:scale-105"
+                sizes="(max-width: 1024px) 100vw, 50vw"
               />
               <div className="absolute top-4 left-4 flex flex-col gap-2 z-10">
                 {product.isNew && (
@@ -74,7 +78,7 @@ export default function ProductDetailClient({ product }: { product: ProductDetai
                         : 'border-transparent scale-95 opacity-60 hover:opacity-100 hover:scale-100'
                     }`}
                   >
-                    <img src={img} alt={`Vista ${idx + 1}`} className="w-full h-full object-cover" />
+                    <Image src={img} alt={`Vista ${idx + 1}`} fill className="object-cover" sizes="(max-width: 640px) 64px, 80px" />
                   </button>
                 ))}
               </div>

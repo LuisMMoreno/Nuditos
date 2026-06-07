@@ -1,5 +1,6 @@
 import Button from '../Button';
 import Link from 'next/link';
+import Image from 'next/image';
 import { Heart, Sparkles, HandHeart } from 'lucide-react';
 
 const values = [
@@ -50,10 +51,12 @@ export default function NubiSection() {
                   key={i} 
                   className="w-56 sm:w-64 md:w-80 h-72 sm:h-80 md:h-96 mx-3 sm:mx-4 flex-shrink-0 bg-nuditos-crema/40 backdrop-blur-sm border border-nuditos-marron/5 rounded-[2rem] sm:rounded-[2.5rem] overflow-hidden relative"
                 >
-                  <img 
+                  <Image 
                     src={src} 
                     alt={`Nubi ${i + 1}`} 
-                    className="w-full h-full object-cover"
+                    fill
+                    className="object-cover"
+                    sizes="(max-width: 640px) 224px, (max-width: 768px) 256px, 320px"
                   />
                 </div>
               ))}
@@ -66,15 +69,20 @@ export default function NubiSection() {
 
           {/* Contenido Frontal */}
           <div className="relative z-10 text-center max-w-4xl mx-auto px-6">
-            <p className="text-3xl sm:text-4xl md:text-5xl text-nuditos-marron-oscuro leading-relaxed sm:leading-snug drop-shadow-sm">
-              <span className="font-display italic text-4xl sm:text-5xl md:text-6xl pr-2 text-nuditos-marron">Nubi</span> 
-              es más que un simple muñeco, es un 
-              <strong className="font-bold px-2 block sm:inline">compañero terapéutico</strong>
-              diseñado para abrazar tus días y brindarte 
-              <span className="font-display italic text-4xl sm:text-5xl md:text-6xl pl-2 text-nuditos-marron">regulación emocional profunda</span>.
+            <h2 id="nubi-heading" className="sr-only">Nubi: Nuestro compañero terapéutico</h2>
+            <p className="text-2xl sm:text-3xl md:text-4xl text-nuditos-marron-oscuro leading-relaxed sm:leading-loose">
+              <span className="font-serif italic text-4xl sm:text-5xl md:text-6xl font-normal text-nuditos-marron-claro block sm:inline mb-2 sm:mb-0">Nubi</span>{' '}
+              es más que un simple muñeco, es un{' '}
+              <span className="font-extrabold text-nuditos-marron-oscuro bg-nuditos-amarillo/40 px-2 py-0.5 rounded-lg whitespace-nowrap">
+                compañero terapéutico
+              </span>{' '}
+              diseñado para abrazar tus días y brindarte{' '}
+              <span className="font-serif italic text-3xl sm:text-4xl md:text-5xl font-medium text-nuditos-marron block sm:inline mt-2 sm:mt-0 underline decoration-nuditos-rosa decoration-wavy decoration-2 underline-offset-8">
+                regulación emocional profunda
+              </span>.
             </p>
 
-            <div className="mt-12 text-center">
+            <div className="mt-14 text-center">
               <Link href="/nubi">
                 <Button size="lg" variant="primary" className="shadow-medium hover:shadow-lg hover:-translate-y-1 active:translate-y-0 active:scale-95 px-10 transition-all duration-300">
                   Conocer a Nubi

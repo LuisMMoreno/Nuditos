@@ -61,11 +61,12 @@ export default function BentoCatalogue({ products, categoryName, categoryDescrip
               {/* Contenedor de Imagen de Fondo con Zoom (ahora clickeable) */}
               <Link href={product.slug ? `/producto/${product.slug}` : '#'} className="absolute inset-0 bg-nuditos-beige overflow-hidden group/link">
                 {product.image ? (
-                  <img
+                  <Image
                     src={product.image}
                     alt={product.name}
-                    className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-110"
-                    loading="lazy"
+                    fill
+                    className="object-cover transition-transform duration-700 ease-out group-hover:scale-110"
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                   />
                 ) : (
                   <div className="w-full h-full flex items-center justify-center bg-nuditos-crema text-8xl">

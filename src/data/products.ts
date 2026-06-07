@@ -213,8 +213,8 @@ export const productsData: ProductDetail[] = [
       { title: 'Calmante Sensorial', desc: 'La textura tejida ayuda a reducir el estrés cotidiano.' }
     ],
     gallery: [
-      '/productos/llaveros/abejas/2.jpeg',
-      '/productos/llaveros/abejas/3.jpeg'
+      '/productos/llaveros/abejas/3.jpeg',
+      '/productos/llaveros/abejas/1.jpeg'
     ]
   },
   {

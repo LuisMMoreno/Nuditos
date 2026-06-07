@@ -192,10 +192,13 @@ ${customName ? `- Nombre para mi Nubi: "${customName}"\n` : ''}- Cantidad: ${qua
               role="img"
               aria-label={`Imagen de Nubi modelo ${selectedModel.name} ${selectedOutfit.name !== 'Sin ropita' ? 'con outfit ' + selectedOutfit.name : ''}`}
             >
-              <img
+              <Image
                 src={activeImage}
                 alt={`Nubi ${selectedOutfit.name}`}
-                className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                fill
+                priority
+                className="object-cover transition-transform duration-500 group-hover:scale-105"
+                sizes="(max-width: 1024px) 100vw, 50vw"
               />
 
               <div className="absolute top-4 sm:top-6 left-4 sm:left-6 right-4 sm:right-6 flex flex-col sm:flex-row gap-2 items-start sm:items-start justify-between z-10">
@@ -228,7 +231,7 @@ ${customName ? `- Nombre para mi Nubi: "${customName}"\n` : ''}- Cantidad: ${qua
                     className={`relative w-20 h-20 sm:w-24 sm:h-24 rounded-2xl overflow-hidden flex-shrink-0 border-2 transition-all duration-200 focus:outline-none focus:ring-4 focus:ring-nuditos-marron/20 ${activeImage === img ? 'border-nuditos-marron scale-100 shadow-md' : 'border-transparent scale-95 opacity-70 hover:opacity-100 hover:scale-100'
                       }`}
                   >
-                    <img src={img} alt={`Vista ${idx + 1}`} className="w-full h-full object-cover" />
+                    <Image src={img} alt={`Vista ${idx + 1}`} fill className="object-cover" sizes="(max-width: 640px) 80px, 96px" />
                   </button>
                 ))}
               </div>
