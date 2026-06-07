@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
+import Image from 'next/image';
 import { Heart, Truck, Shield, Link as LinkIcon, HandHeart, AlertCircle } from 'lucide-react';
 import Button from '@/src/components/Button';
 
@@ -61,42 +62,18 @@ const NAME_REGEX = /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/;
 const MAX_NAME_LENGTH = 20;
 
 const OutfitIcon = ({ icon, className = "w-12 h-12" }: { icon: string; className?: string }) => {
-  const icons: Record<string, React.ReactNode> = {
-    rabbit: (
-      <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-        <path d="M12 2C10.5 2 9 3 9 5V7M15 5V7M12 2C13.5 2 15 3 15 5" strokeLinecap="round"/>
-        <circle cx="12" cy="13" r="7" />
-        <circle cx="9.5" cy="12" r="1" fill="currentColor" />
-        <circle cx="14.5" cy="12" r="1" fill="currentColor" />
-        <path d="M12 15V16M10 17H14" strokeLinecap="round"/>
-      </svg>
-    ),
-    shark: (
-      <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-        <path d="M2 12C2 12 4 8 8 7C10 6.5 12 7 14 8L18 6L16 10C18 11 20 12 22 12C20 14 18 15 16 16L18 20L14 18C12 19 10 19.5 8 19C4 18 2 14 2 12Z" strokeLinecap="round" strokeLinejoin="round"/>
-        <circle cx="10" cy="11" r="1" fill="currentColor"/>
-      </svg>
-    ),
-    frog: (
-      <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-        <circle cx="8" cy="10" r="2" />
-        <circle cx="16" cy="10" r="2" />
-        <ellipse cx="12" cy="15" rx="6" ry="5" />
-        <path d="M8 16L6 18M16 16L18 18" strokeLinecap="round"/>
-      </svg>
-    ),
-    cat: (
-      <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-        <path d="M8 6L5 3M16 6L19 3" strokeLinecap="round"/>
-        <circle cx="12" cy="13" r="7" />
-        <circle cx="9.5" cy="12" r="1" fill="currentColor" />
-        <circle cx="14.5" cy="12" r="1" fill="currentColor" />
-        <path d="M10 16C11 17 13 17 14 16" strokeLinecap="round"/>
-        <path d="M6 14L4 13M18 14L20 13" strokeLinecap="round"/>
-      </svg>
-    ),
+  const iconMap: Record<string, string> = {
+    rabbit: '/icons/conejito.png',
+    shark: '/icons/tiburon.png',
+    frog: '/icons/ranita.png',
+    cat: '/icons/gato-negro.webp',
   };
-  return icons[icon] || icons.rabbit;
+  const src = iconMap[icon] || iconMap.rabbit;
+  return (
+    <div className={`relative ${className}`}>
+      <Image src={src} alt={icon} fill className="object-contain" />
+    </div>
+  );
 };
 
 export default function NubiPage() {
@@ -146,7 +123,7 @@ export default function NubiPage() {
 - Ropita: ${selectedOutfit.name}
 ${customName ? `- Nombre para mi Nubi: "${customName}"\n` : ''}- Cantidad: ${quantity}
 - Total: $${totalPrice.toLocaleString('es-CO')}`;
-    
+
     const whatsappUrl = `https://wa.me/573053655297?text=${encodeURIComponent(message)}`;
     window.open(whatsappUrl, '_blank');
   };
@@ -207,7 +184,7 @@ ${customName ? `- Nombre para mi Nubi: "${customName}"\n` : ''}- Cantidad: ${qua
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-20">
-          
+
           {/* Image Section */}
           <div className="space-y-6">
             <div
@@ -222,14 +199,14 @@ ${customName ? `- Nombre para mi Nubi: "${customName}"\n` : ''}- Cantidad: ${qua
               />
 
               <div className="absolute top-4 sm:top-6 left-4 sm:left-6 right-4 sm:right-6 flex flex-col sm:flex-row gap-2 items-start sm:items-start justify-between z-10">
-                 <span className="bg-white/90 backdrop-blur-sm px-3 sm:px-4 py-2 rounded-2xl text-nuditos-marron-oscuro font-bold text-xs sm:text-sm shadow-sm">
-                    {selectedModel.name}
-                 </span>
-                 {selectedOutfit.id !== 'ninguno' && (
-                   <span className="bg-nuditos-rosa/90 backdrop-blur-sm px-3 sm:px-4 py-2 rounded-2xl text-white font-bold text-xs sm:text-sm shadow-sm">
-                      {selectedOutfit.name}
-                   </span>
-                 )}
+                <span className="bg-white/90 backdrop-blur-sm px-3 sm:px-4 py-2 rounded-2xl text-nuditos-marron-oscuro font-bold text-xs sm:text-sm shadow-sm">
+                  {selectedModel.name}
+                </span>
+                {selectedOutfit.id !== 'ninguno' && (
+                  <span className="bg-nuditos-rosa/90 backdrop-blur-sm px-3 sm:px-4 py-2 rounded-2xl text-white font-bold text-xs sm:text-sm shadow-sm">
+                    {selectedOutfit.name}
+                  </span>
+                )}
               </div>
 
               {customName && (
@@ -248,9 +225,8 @@ ${customName ? `- Nombre para mi Nubi: "${customName}"\n` : ''}- Cantidad: ${qua
                   <button
                     key={idx}
                     onClick={() => setActiveImage(img)}
-                    className={`relative w-20 h-20 sm:w-24 sm:h-24 rounded-2xl overflow-hidden flex-shrink-0 border-2 transition-all duration-200 focus:outline-none focus:ring-4 focus:ring-nuditos-marron/20 ${
-                      activeImage === img ? 'border-nuditos-marron scale-100 shadow-md' : 'border-transparent scale-95 opacity-70 hover:opacity-100 hover:scale-100'
-                    }`}
+                    className={`relative w-20 h-20 sm:w-24 sm:h-24 rounded-2xl overflow-hidden flex-shrink-0 border-2 transition-all duration-200 focus:outline-none focus:ring-4 focus:ring-nuditos-marron/20 ${activeImage === img ? 'border-nuditos-marron scale-100 shadow-md' : 'border-transparent scale-95 opacity-70 hover:opacity-100 hover:scale-100'
+                      }`}
                   >
                     <img src={img} alt={`Vista ${idx + 1}`} className="w-full h-full object-cover" />
                   </button>
@@ -275,11 +251,10 @@ ${customName ? `- Nombre para mi Nubi: "${customName}"\n` : ''}- Cantidad: ${qua
                     aria-checked={selectedModel.id === model.id}
                     onClick={() => setSelectedModel(model)}
                     onKeyDown={(e) => handleKeyDown(e, () => setSelectedModel(model))}
-                    className={`w-full p-4 sm:p-5 rounded-3xl border-2 transition-all duration-200 text-left focus:outline-none focus:ring-4 focus:ring-nuditos-marron/20 group min-h-[88px] ${
-                      selectedModel.id === model.id
-                        ? 'border-nuditos-marron bg-white shadow-medium scale-[1.02]'
-                        : 'border-transparent bg-white/50 hover:bg-white hover:shadow-soft'
-                    }`}
+                    className={`w-full p-4 sm:p-5 rounded-3xl border-2 transition-all duration-200 text-left focus:outline-none focus:ring-4 focus:ring-nuditos-marron/20 group min-h-[88px] ${selectedModel.id === model.id
+                      ? 'border-nuditos-marron bg-white shadow-medium scale-[1.02]'
+                      : 'border-transparent bg-white/50 hover:bg-white hover:shadow-soft'
+                      }`}
                   >
                     <div className="flex justify-between items-center mb-2">
                       <span className="text-base sm:text-lg font-bold text-nuditos-marron-oscuro">
@@ -311,11 +286,10 @@ ${customName ? `- Nombre para mi Nubi: "${customName}"\n` : ''}- Cantidad: ${qua
                     aria-checked={selectedOutfit.id === outfit.id}
                     onClick={() => setSelectedOutfit(outfit)}
                     onKeyDown={(e) => handleKeyDown(e, () => setSelectedOutfit(outfit))}
-                    className={`p-3 sm:p-4 rounded-3xl border-2 transition-all duration-200 text-center focus:outline-none focus:ring-4 focus:ring-nuditos-marron/20 min-h-[88px] ${
-                      selectedOutfit.id === outfit.id
-                        ? 'border-nuditos-marron bg-white shadow-soft scale-[1.02]'
-                        : 'border-transparent bg-white/50 hover:bg-white hover:shadow-soft'
-                    }`}
+                    className={`p-3 sm:p-4 rounded-3xl border-2 transition-all duration-200 text-center focus:outline-none focus:ring-4 focus:ring-nuditos-marron/20 min-h-[88px] ${selectedOutfit.id === outfit.id
+                      ? 'border-nuditos-marron bg-white shadow-soft scale-[1.02]'
+                      : 'border-transparent bg-white/50 hover:bg-white hover:shadow-soft'
+                      }`}
                   >
                     <div className="w-10 h-10 sm:w-12 sm:h-12 mx-auto mb-2 flex items-center justify-center">
                       <OutfitIcon icon={outfit.icon} className={`w-8 h-8 sm:w-10 sm:h-10 ${selectedOutfit.id === outfit.id ? 'text-nuditos-marron-oscuro' : 'text-nuditos-marron'}`} />
@@ -332,42 +306,7 @@ ${customName ? `- Nombre para mi Nubi: "${customName}"\n` : ''}- Cantidad: ${qua
             </div>
 
             {/* Custom Name */}
-            <div className="bg-white p-5 sm:p-6 rounded-3xl shadow-soft border border-nuditos-rosa-claro">
-              <h3 className="text-lg font-bold text-nuditos-marron-oscuro mb-2">
-                Paso 3: Bautiza a tu Nubi
-              </h3>
-              <p className="text-sm text-nuditos-marron mb-4">Darle un nombre ayuda a fortalecer el vínculo de apego.</p>
-              <div className="space-y-2">
-                <label htmlFor="custom-name" className="sr-only">
-                  Nombre personalizado para tu Nubi
-                </label>
-                <input
-                  ref={nameInputRef}
-                  id="custom-name"
-                  type="text"
-                  value={customName}
-                  onChange={handleNameChange}
-                  placeholder="Ej. Copo, Luna, Miel..."
-                  maxLength={MAX_NAME_LENGTH}
-                  aria-invalid={!!nameError}
-                  aria-describedby={nameError ? 'name-error' : 'name-hint'}
-                  className={`w-full px-4 sm:px-5 py-4 h-14 rounded-2xl border-2 focus:outline-none focus:ring-4 transition-all duration-200 bg-nuditos-crema/50 font-medium text-nuditos-marron-oscuro text-base sm:text-lg min-h-[44px] ${
-                    nameError
-                      ? 'border-red-400 focus:border-red-500 focus:ring-red-200'
-                      : 'border-nuditos-beige/70 focus:border-nuditos-marron focus:ring-nuditos-marron/10'
-                  }`}
-                />
-                {nameError && (
-                  <p id="name-error" role="alert" className="flex items-center gap-2 text-sm text-red-600 font-medium">
-                    <AlertCircle className="w-4 h-4 flex-shrink-0" />
-                    {nameError}
-                  </p>
-                )}
-                <p id="name-hint" className="text-xs text-nuditos-marron/70">
-                  Solo letras y espacios. Máximo {MAX_NAME_LENGTH} caracteres.
-                </p>
-              </div>
-            </div>
+
 
             {/* Checkout Section */}
             <div className="bg-nuditos-marron-oscuro rounded-3xl p-5 sm:p-6 lg:p-8 shadow-medium text-white" role="region" aria-label="Resumen de compra">
@@ -425,7 +364,7 @@ ${customName ? `- Nombre para mi Nubi: "${customName}"\n` : ''}- Cantidad: ${qua
                 <h2 className="text-3xl sm:text-4xl font-bold text-nuditos-marron-oscuro mb-8 leading-tight">
                   ¿Por qué Nubi es más que un simple amigurumi?
                 </h2>
-                
+
                 <div className="space-y-6">
                   <p className="text-lg text-nuditos-marron leading-relaxed">
                     Nubi está pensado como una herramienta terapéutica activa. Los <strong className="text-nuditos-marron-oscuro">amigurumis de contención</strong> son utilizados en psicología para ayudar a individuos a gestionar picos de ansiedad, estrés y desregulación emocional.
@@ -438,7 +377,7 @@ ${customName ? `- Nombre para mi Nubi: "${customName}"\n` : ''}- Cantidad: ${qua
                   </p>
                 </div>
               </div>
-              
+
               <div className="bg-nuditos-marron-oscuro text-white p-10 sm:p-16 lg:p-20 flex flex-col justify-center">
                 <h3 className="text-2xl font-bold mb-10 border-b border-white/20 pb-4">
                   Ventajas Terapeúticas

@@ -15,6 +15,7 @@ const categories = [
     blobColor: 'bg-nuditos-verde',
     buttonVariant: 'outline',
     reversed: false,
+    image: '/productos/bolsos/fresita/8.jpeg',
   },
   {
     id: 'llaveros',
@@ -27,18 +28,7 @@ const categories = [
     blobColor: 'bg-nuditos-amarillo',
     buttonVariant: 'primary',
     reversed: true,
-  },
-  {
-    id: 'flores',
-    name: 'Flores',
-    tagline: 'Belleza que perdura',
-    description: 'Regalos emocionales que no se marchitan con el tiempo. Tejidas a mano con suprema delicadeza, nuestras flores simbolizan el cuidado eterno y el afecto incondicional, perfectas para alegrar cualquier espacio de forma permanente.',
-    icon: Flower,
-    href: '/flores',
-    bgLight: 'bg-nuditos-rosa-claro/10',
-    blobColor: 'bg-nuditos-rosa',
-    buttonVariant: 'outline',
-    reversed: false,
+    image: '/productos/llaveros/general/2.jpeg',
   },
   {
     id: 'monas',
@@ -46,7 +36,7 @@ const categories = [
     tagline: 'Detalles que abrazan',
     description: 'Accesorios suaves para el cabello que no jalonan ni lastiman. Creadas con la misma intención terapéutica y materiales nobles de nuestros amigurumis, completando tu estilo con pequeñas pinceladas de amor.',
     icon: Sparkles,
-    image: '/categories/monas.png',
+    image: '/productos/monas/nuevas/girasol 2.jpeg',
     href: '/monas',
     bgLight: 'bg-nuditos-crema',
     blobColor: 'bg-nuditos-marron-claro',
@@ -59,7 +49,7 @@ const categories = [
     tagline: 'Coronas de confort',
     description: 'Piezas únicas diseñadas para coronar tu rutina con estilo y comodidad. Nuestras diademas están estructuradas para no causar presión, combinando materiales de alta calidad con personajes que te harán sonreír.',
     icon: Crown,
-    image: '/categories/sapito.png',
+    image: '/productos/diademas/ranita/3.jpeg',
     href: '/diademas',
     bgLight: 'bg-nuditos-beige/20',
     blobColor: 'bg-nuditos-marron',
@@ -160,7 +150,7 @@ export default function CategoriesSection() {
 
                 <div className="relative z-10 w-full max-w-sm aspect-[4/5] bg-white/50 backdrop-blur-md rounded-2xl sm:rounded-3xl border border-white/60 shadow-[0_8px_30px_rgb(0,0,0,0.06)] flex flex-col items-center justify-center overflow-hidden group">
                   <div className="absolute inset-0 bg-gradient-to-b from-transparent via-white/10 to-white/20" />
-                  
+
                   {category.image ? (
                     <div className="relative w-full h-full p-4 sm:p-6 flex items-center justify-center">
                       <div className="relative w-full h-full rounded-xl sm:rounded-2xl overflow-hidden shadow-inner">

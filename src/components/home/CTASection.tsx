@@ -7,10 +7,7 @@ export default function CTASection() {
     <section className="py-16 sm:py-24 bg-gradient-to-br from-nuditos-marron via-nuditos-marron-claro to-nuditos-rosa" aria-labelledby="cta-heading">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col items-center text-center">
         {/* Badge de urgencia */}
-        <div className="inline-flex items-center gap-2 bg-white/20 backdrop-blur-sm px-4 py-2 rounded-full mb-6">
-          <Heart className="w-4 h-4 text-white fill-white" aria-hidden="true" />
-          <span className="text-sm font-semibold text-white">Envío gratis en pedidos hoy</span>
-        </div>
+
 
         <h2 id="cta-heading" className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-bold text-white drop-shadow-md mb-4 sm:mb-6 leading-tight max-w-4xl">
           Un abrazo que siempre está, incluso en la distancia
@@ -45,13 +42,13 @@ export default function CTASection() {
             <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
               <path d="M5 13l4 4L19 7" />
             </svg>
-            30 días de garantía
+            Envios nacionales
           </span>
           <span className="flex items-center gap-1">
             <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
               <path d="M5 13l4 4L19 7" />
             </svg>
-            Hecho con amor
+            Hecho a mano
           </span>
         </div>
       </div>

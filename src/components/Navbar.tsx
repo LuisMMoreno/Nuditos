@@ -68,7 +68,7 @@ export default function Navbar() {
           <ChevronLeft className="w-4 h-4 sm:w-5 sm:h-5" />
         </button>
         <div className="text-center flex-1 font-medium tracking-wide">
-          ESPACIO PARA TUS PROMOCIONES - ENVÍO GRATIS
+          ENVÍO GRATIS EN FUSAGASUGA
         </div>
         <button aria-label="Siguiente promoción" className="opacity-80 hover:opacity-100 transition-opacity">
           <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5" />
@@ -76,14 +76,12 @@ export default function Navbar() {
       </div>
 
       <nav
-        className={`w-full transition-all duration-300 border-b border-gray-100 ${
-          scrolled ? 'py-2 shadow-sm' : 'py-4'
-        }`}
+        className="w-full transition-all duration-300 border-b border-gray-100 py-2 shadow-sm"
         role="navigation"
         aria-label="Main navigation"
       >
         <div className="max-w-[1600px] mx-auto px-4 sm:px-8 flex items-center justify-between">
-          
+
           {/* Left Area: Desktop Nav Links & Mobile Menu */}
           <div className="flex items-center flex-1 justify-start">
             {/* Mobile Menu Button */}
@@ -102,9 +100,8 @@ export default function Navbar() {
                   <Link
                     href={link.href}
                     role="menuitem"
-                    className={`text-sm tracking-[0.1em] uppercase font-medium hover:text-gray-500 transition-colors ${
-                      isActive(link.href) ? 'border-b-2 border-black pb-1' : ''
-                    }`}
+                    className={`text-sm tracking-[0.1em] uppercase font-medium hover:text-gray-500 transition-colors ${isActive(link.href) ? 'border-b-2 border-black pb-1' : ''
+                      }`}
                   >
                     {link.label}
                   </Link>
@@ -192,9 +189,8 @@ export default function Navbar() {
                 <Link
                   href={link.href}
                   onClick={() => setIsMenuOpen(false)}
-                  className={`block text-sm tracking-widest uppercase font-medium ${
-                    isActive(link.href) ? 'text-black font-bold' : 'text-gray-600'
-                  }`}
+                  className={`block text-sm tracking-widest uppercase font-medium ${isActive(link.href) ? 'text-black font-bold' : 'text-gray-600'
+                    }`}
                 >
                   {link.label}
                 </Link>
