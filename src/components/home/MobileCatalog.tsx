@@ -24,7 +24,7 @@ function CatalogContent() {
     if (categoryParam) {
       const normalizedCategory = categoryParam.charAt(0).toUpperCase() + categoryParam.slice(1).toLowerCase();
       // Validate it exists in our categories
-      const categories = ['Todos', 'Nubi', 'Moñas', 'Diademas', 'Llaveros', 'Bolsos', 'Flores'];
+      const categories = ['Todos', 'Nubi', 'Moñas', 'Diademas', 'Llaveros', 'Bolsos'];
       if (categories.includes(normalizedCategory)) {
         setActiveCategory(normalizedCategory);
       } else if (categoryParam.toLowerCase() === 'monas') {
@@ -43,8 +43,8 @@ function CatalogContent() {
     }
   }, [productParam]);
 
-  // Categories list
-  const categories = ['Todos', 'Nubi', 'Moñas', 'Diademas', 'Llaveros', 'Bolsos', 'Flores'];
+  // Categories list (Flores oculto temporalmente - producto aún no disponible)
+  const categories = ['Todos', 'Nubi', 'Moñas', 'Diademas', 'Llaveros', 'Bolsos'];
 
   // Handle category pill click
   const handleCategoryClick = (cat: string) => {
@@ -77,8 +77,9 @@ function CatalogContent() {
     }
   };
 
-  // Filter products
+  // Filter products (Flores oculto temporalmente)
   const filteredProducts = productsData.filter((product) => {
+    if (product.category.toLowerCase() === 'flores') return false; // oculto hasta disponibilidad
     const matchesCategory = activeCategory === 'Todos' || product.category.toLowerCase() === activeCategory.toLowerCase();
     const matchesSearch = 
       product.name.toLowerCase().includes(searchQuery.toLowerCase()) || 

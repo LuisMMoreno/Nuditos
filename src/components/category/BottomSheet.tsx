@@ -31,22 +31,22 @@ const nubiModels = [
   {
     id: 'sin-peso',
     name: 'Clásico (Sin peso)',
-    price: 100000,
+    price: 80000,
     description: 'Ligero y abrazable, ideal para compañía diaria y llevar a todos lados.'
   },
   {
     id: 'con-peso',
     name: 'Terapéutico (Con peso)',
-    price: 150000,
+    price: 100000,
     description: 'Con peso distribuido (~1kg). Estimula el sistema nervioso brindando calma profunda.'
   },
 ];
 
 const nubiOutfits = [
   { id: 'ninguno', name: 'Sin ropita', icon: '🐰', price: 0 },
-  { id: 'tiburon', name: 'Saco Tiburón (Azul)', icon: '🦈', price: 30000 },
-  { id: 'sapito', name: 'Saco Sapito (Verde)', icon: '🐸', price: 30000 },
-  { id: 'gatito', name: 'Saco Gatito (Negro)', icon: '🐱', price: 30000 },
+  { id: 'tiburon', name: 'Saco Tiburón (Azul)', icon: '🦈', price: 20000 },
+  { id: 'sapito', name: 'Saco Sapito (Verde)', icon: '🐸', price: 20000 },
+  { id: 'gatito', name: 'Saco Gatito (Negro)', icon: '🐱', price: 20000 },
 ];
 
 const nubiOutfitImages: Record<string, string[]> = {
