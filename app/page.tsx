@@ -1,15 +1,6 @@
-import HeroCarousel from '@/src/components/home/HeroCarousel';
-import NubiSection from '@/src/components/home/NubiSection';
-import CategoriesSection from '@/src/components/home/CategoriesSection';
-import CTASection from '@/src/components/home/CTASection';
+import MobileCatalog from '@/src/components/home/MobileCatalog';
 
 export default function Home() {
-  return (
-    <>
-      <HeroCarousel />
-      <NubiSection />
-      <CategoriesSection />
-      <CTASection />
-    </>
-  );
+  return <MobileCatalog />;
 }
+

@@ -658,6 +658,64 @@ Se creó un sistema de enrutamiento dinámico `app/producto/[slug]/page.tsx` par
 
 ---
 
+## 2026-07-14 - Rediseño Total a Catálogo Móvil Minimalista con Pedido Directo por WhatsApp
+
+### Qué se hizo
+- Rediseño completo de la experiencia web transformando el sitio de una landing page convencional multi-página a un catálogo digital interactivo de una sola página (SPA) diseñado al 100% para dispositivos móviles.
+- Consolidación del flujo de ventas y checkout canalizando todas las transacciones directamente hacia WhatsApp con mensajes pre-formateados dinámicos.
+- Reemplazo del carrusel de inicio y páginas de categorías por una cuadrícula de dos columnas altamente escaneable y equipada con filtros sticky y buscador interactivo.
+- Creación de un Bottom Sheet animado (hoja deslizable desde la base) nativo para móviles, con soporte para galería de imágenes, storytelling del producto, viñetas de ventajas y personalización completa de Nubi (modelo clásico/terapéutico, ropita y nombre) en tiempo real.
+- Inclusión del producto Nubi al catálogo general.
+- Configuración de redirecciones en todas las subrutas antiguas para asegurar que los enlaces compartidos y el SEO abran el catálogo con los filtros adecuados o el Bottom Sheet del producto específico pre-cargado.
+
+### Por qué se hizo
+- Incrementar la confianza del cliente simplificando la compra y cerrando la venta de forma humana a través de WhatsApp.
+- Minimizar el esfuerzo cognitivo del usuario mediante un diseño que se escanea rápidamente, alineado con principios modernos de marketing visual.
+- Optimizar la experiencia de usuario garantizando que la navegación fluya de forma nativa en pantallas de teléfonos móviles.
+
+### Cómo se hizo
+- Modificación de la barra de navegación (`Navbar.tsx`) y pie de página (`Footer.tsx`) reduciendo su complejidad al mínimo.
+- Creación del componente de catálogo de inicio (`MobileCatalog.tsx`) que gestiona el estado de filtros, búsqueda en vivo y lee parámetros de consulta.
+- Creación de `BottomSheet.tsx` con Framer Motion para transiciones suaves e inyección del configurador interactivo de Nubi.
+- Configuración de redireccionamiento temporal (Next.js server-side redirection) en las páginas de categorías y de productos detallados.
+- Incorporación de Nubi en `productsData` (`src/data/products.ts`) con metadatos y enlaces de imagen reales.
+
+**Archivos modificados:**
+- `app/page.tsx` - Reemplazo de homepage tradicional por el catálogo móvil.
+- `src/components/Navbar.tsx` - Simplificación de cabecera con botón de WhatsApp.
+- `src/components/Footer.tsx` - Simplificación de pie de página.
+- `src/data/products.ts` - Incorporación de Nubi a la data base de productos.
+- `app/llaveros/page.tsx` - Redirección a catálogo.
+- `app/bolsos/page.tsx` - Redirección a catálogo.
+- `app/flores/page.tsx` - Redirección a catálogo.
+- `app/monas/page.tsx` - Redirección a catálogo.
+- `app/diademas/page.tsx` - Redirección a catálogo.
+- `app/nubi/page.tsx` - Redirección a catálogo con parámetro de producto.
+- `app/carrito/page.tsx` - Redirección a catálogo.
+- `app/producto/[slug]/page.tsx` - Redirección dinámica a catálogo.
+
+**Archivos creados:**
+- `src/components/home/MobileCatalog.tsx` - Componente del catálogo y estado de búsqueda/filtros.
+- `src/components/category/BottomSheet.tsx` - Detalle deslizable interactivo.
+
+---
+
+## 2026-07-14 - Simplificación del Catálogo: Eliminación del Banner Hero
+
+### Qué se hizo
+- Remoción completa del banner Hero de presentación ("Calma y amor en cada puntada"), subtítulo y píldoras informativas de beneficios en `MobileCatalog.tsx`.
+- Ajuste del espaciado superior (`pt-24`) y eliminación del primer círculo decorativo borroso para iniciar la interfaz de usuario directamente con el cuadro de búsqueda y el catálogo de productos.
+- Reducción del tamaño de la página web al eliminar texto estático innecesario y elementos visuales redundantes, haciéndola aún más ligera y veloz en la carga.
+
+### Por qué se hizo
+- Solicitud expresa del usuario para centrar al 100% la atención del cliente únicamente en los productos desde el primer instante de carga.
+- Hacer el sitio web extremadamente rápido, liviano y enfocado en la conversión inmediata.
+
+### Cómo se hizo
+- Modificación del archivo `src/components/home/MobileCatalog.tsx`.
+
+---
+
 ## Contacto y Recursos
 
 **Repositorio:** [No configurado]  

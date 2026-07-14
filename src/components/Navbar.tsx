@@ -2,117 +2,34 @@
 
 import Link from 'next/link';
 import Image from 'next/image';
-import { useState, useEffect, useRef } from 'react';
-import { usePathname } from 'next/navigation';
-import { Menu, X, Search, ChevronLeft, ChevronRight } from 'lucide-react';
-import { useCart } from '@/src/context/CartContext';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 export default function Navbar() {
-  const { totalItems } = useCart();
-  const pathname = usePathname();
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
-  const [showSearch, setShowSearch] = useState(false);
-  const menuRef = useRef<HTMLDivElement>(null);
-  const searchRef = useRef<HTMLInputElement>(null);
-
-  // Scroll detection with direction
-  useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 20);
-    };
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
-  // Focus trap for mobile menu
-  useEffect(() => {
-    if (isMenuOpen) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = '';
-    }
-    return () => { document.body.style.overflow = ''; };
-  }, [isMenuOpen]);
-
-  // Close search on click outside
-  useEffect(() => {
-    const handleClickOutside = (e: MouseEvent) => {
-      if (searchRef.current && !searchRef.current.contains(e.target as Node)) {
-        setShowSearch(false);
-      }
-    };
-    if (showSearch) {
-      searchRef.current?.focus();
-      document.addEventListener('mousedown', handleClickOutside);
-    }
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, [showSearch]);
-
-  const navLinks = [
-    { href: '/nubi', label: 'Nubi' },
-    { href: '/monas', label: 'Moñas' },
-    { href: '/bolsos', label: 'Bolsos' },
-    { href: '/llaveros', label: 'Llaveros' },
-    { href: '/diademas', label: 'Diademas' },
-  ];
-
-  const isActive = (href: string) => pathname === href;
-
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-white">
+    <header className="bg-white">
       {/* Franja de Promociones */}
       <div className="bg-[#2A2A2A] text-white text-xs sm:text-sm py-2.5 px-4 flex justify-between items-center w-full">
         <button aria-label="Promoción anterior" className="opacity-80 hover:opacity-100 transition-opacity">
-          <ChevronLeft className="w-4 h-4 sm:w-5 sm:h-5" />
+          <ChevronLeft className="w-4 h-4" />
         </button>
         <div className="text-center flex-1 font-medium tracking-wide">
-          🔥 ENVÍO GRATIS EN FUSAGASUGA 🔥
+          🔥 ENVÍO GRATIS EN FUSAGASUGÁ 🔥
         </div>
         <button aria-label="Siguiente promoción" className="opacity-80 hover:opacity-100 transition-opacity">
-          <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5" />
+          <ChevronRight className="w-4 h-4" />
         </button>
       </div>
 
       <nav
-        className="w-full border-b border-gray-100 py-1 shadow-sm"
+        className="w-full border-b border-gray-100 py-2 shadow-sm"
         role="navigation"
         aria-label="Main navigation"
       >
-        <div className="max-w-[1600px] mx-auto px-4 sm:px-8 flex items-center justify-between">
-
-          {/* Left Area: Desktop Nav Links & Mobile Menu */}
-          <div className="flex items-center flex-1 justify-start">
-            {/* Mobile Menu Button */}
-            <button
-              onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="lg:hidden p-2 mr-2"
-              aria-label="Menú"
-            >
-              {isMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-            </button>
-
-            {/* Desktop Links */}
-            <ul className="hidden lg:flex items-center space-x-6 xl:space-x-8" role="menubar">
-              {navLinks.map((link) => (
-                <li key={link.href} role="none">
-                  <Link
-                    href={link.href}
-                    role="menuitem"
-                    className={`text-sm tracking-[0.1em] uppercase font-medium hover:text-gray-500 transition-colors ${isActive(link.href) ? 'border-b-2 border-black pb-1' : ''
-                      }`}
-                  >
-                    {link.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Center Area: Logo */}
-          <div className="flex-shrink-0 flex justify-center items-center">
-            <Link href="/" className="outline-none py-1 flex items-center justify-center">
-              <div className="relative w-12 h-12">
+        <div className="max-w-[600px] mx-auto px-4 flex items-center justify-between">
+          {/* Logo */}
+          <div className="flex-1 flex justify-start">
+            <Link href="/" className="outline-none py-1 flex items-center">
+              <div className="relative w-10 h-10">
                 <Image
                   src="/isologo_sin_fondo.png"
                   alt="Logo Nuditos"
@@ -121,38 +38,22 @@ export default function Navbar() {
                   priority
                 />
               </div>
+              <span className="ml-2 font-display text-xl tracking-tight text-nuditos-marron-oscuro font-bold">
+                Nuditos
+              </span>
             </Link>
           </div>
 
-          {/* Right Area: Search & Cart */}
-          <div className="flex items-center flex-1 justify-end space-x-4 sm:space-x-6">
-            <div ref={searchRef} className="relative hidden sm:block">
-              {showSearch ? (
-                <input
-                  type="search"
-                  placeholder="Buscar..."
-                  className="w-48 px-3 py-1.5 border-b border-black text-sm outline-none transition-all"
-                  autoFocus
-                />
-              ) : (
-                <button
-                  onClick={() => setShowSearch(true)}
-                  className="p-2 hover:opacity-70 transition-opacity"
-                  aria-label="Buscar"
-                >
-                  <Search className="w-5 h-5 sm:w-6 sm:h-6" />
-                </button>
-              )}
-            </div>
-
+          {/* WhatsApp a la derecha */}
+          <div className="flex items-center justify-end">
             <a
               href="https://wa.me/573053655297"
               target="_blank"
               rel="noopener noreferrer"
-              className="p-1 hover:opacity-70 transition-opacity flex items-center"
+              className="p-2 bg-[#25D366]/10 hover:bg-[#25D366]/20 text-[#20ba5a] rounded-full transition-colors flex items-center gap-1.5 text-xs font-bold tracking-wide"
               aria-label="Contactar por WhatsApp"
             >
-              <div className="relative w-7 h-7 sm:w-8 sm:h-8">
+              <div className="relative w-4 h-4">
                 <Image
                   src="/whatsapp.png"
                   alt="WhatsApp"
@@ -160,42 +61,9 @@ export default function Navbar() {
                   className="object-contain"
                 />
               </div>
+              <span>Escríbenos</span>
             </a>
           </div>
-        </div>
-
-        {/* Mobile Search - Visible only when search toggled on mobile */}
-        {showSearch && (
-          <div className="sm:hidden px-4 mt-2 pb-2">
-            <input
-              type="search"
-              placeholder="Buscar..."
-              className="w-full px-4 py-2 border border-gray-200 rounded-md text-sm outline-none"
-              autoFocus
-            />
-          </div>
-        )}
-
-        {/* Mobile Menu Dropdown */}
-        <div
-          id="mobile-menu"
-          ref={menuRef}
-          className={`lg:hidden overflow-hidden transition-all duration-300 ease-in-out bg-white absolute w-full border-b border-gray-100 shadow-sm ${isMenuOpen ? 'max-h-screen opacity-100 py-4' : 'max-h-0 opacity-0'}`}
-        >
-          <ul className="px-6 space-y-4">
-            {navLinks.map((link) => (
-              <li key={link.href}>
-                <Link
-                  href={link.href}
-                  onClick={() => setIsMenuOpen(false)}
-                  className={`block text-sm tracking-widest uppercase font-medium ${isActive(link.href) ? 'text-black font-bold' : 'text-gray-600'
-                    }`}
-                >
-                  {link.label}
-                </Link>
-              </li>
-            ))}
-          </ul>
         </div>
       </nav>
     </header>

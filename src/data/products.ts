@@ -15,6 +15,29 @@ export interface ProductDetail {
 
 export const productsData: ProductDetail[] = [
   {
+    id: 0,
+    slug: 'nubi',
+    name: 'Nubi',
+    description: 'Muñeco de apego y contención para regulación emocional. Personalízalo con su modelo y ropita tejida.',
+    price: 100000,
+    image: '/nubi/IMG_3435.jpeg',
+    category: 'Nubi',
+    isPopular: true,
+    story: [
+      'Nubi está pensado como una herramienta terapéutica activa. Los amigurumis de contención son recomendados para ayudar a gestionar picos de ansiedad, estrés y desregulación emocional.',
+      'Cuando abrazas a Nubi (especialmente en su modelo con peso), el cuerpo experimenta Estimulación de Presión Profunda (DTP), lo que estimula la liberación de serotonina y dopamina, llevando al sistema nervioso a un estado de calma.'
+    ],
+    features: [
+      { title: 'Estímulo Sensorial', desc: 'Texturas y pesos calculados para activar la relajación.' },
+      { title: 'Materiales Hipoalergénicos', desc: 'Algodón orgánico seguro y suave al tacto.' }
+    ],
+    gallery: [
+      '/nubi/IMG_3431.jpeg',
+      '/nubi/IMG_3432.jpeg',
+      '/nubi/IMG_3436.jpeg'
+    ]
+  },
+  {
     id: 1,
     slug: 'mona-girasol',
     name: 'Moña Girasol',
