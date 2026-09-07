@@ -716,6 +716,46 @@ Se creó un sistema de enrutamiento dinámico `app/producto/[slug]/page.tsx` par
 
 ---
 
+## 2026-09-06 - Agregado de Producto: Pollitos con Sombrero
+
+### Qué se hizo
+- Se copiaron las imágenes desde `IMAGENES/POLLITOS` hacia `public/productos/pollitos/`.
+- Se agregó el producto "Pollitos con Sombrero" a la lista en `src/data/products.ts` con ID 14, precio de $12.000 COP, categoría "Llaveros", galería completa de 5 imágenes e información detallada.
+
+### Por qué se hizo
+- Solicitud del usuario para incorporar este nuevo producto al catálogo.
+
+### Cómo se hizo
+- Modificación de `src/data/products.ts` y copia de assets en `public/productos/pollitos/`.
+
+---
+
+## 2026-09-06 - Categoría Pollitos, Selector de Modelos y Corrección de Advertencias
+
+### Qué se hizo
+- Se corrigieron los 3 avisos de la terminal:
+  1. Atributo `sizes="40px"` en `isologo_sin_fondo.png` en `Navbar.tsx`.
+  2. Atributo `sizes="16px"` en `whatsapp.png` en `Navbar.tsx`.
+  3. Optimización de carga (`loading="eager"` / `priority`) para la primera imagen en `MobileCatalog.tsx`.
+  4. Se asignó ID único 16 a "Pollitos con Sombrero" para evitar duplicados de clave React.
+- Se configuró la categoría **Pollitos** en primer lugar del catálogo móvil, con botón destacado en tonos ámbar, icono de pollito `🐥` y etiqueta "Nuevo".
+- Se ubicó el producto en la parte superior junto a Nubi con etiqueta destacada.
+- Se añadió un selector interactivo de 5 modelos en `BottomSheet.tsx`:
+  - 1: Stitch (gorrito azul)
+  - 2: Ángel (gorrito rosa)
+  - 3: Chaquipiyo (pollito en cascarón)
+  - 4: Spiderman (máscara arácnida)
+  - 5: Sapito (gorrito verde)
+- El selector sincroniza la galería de fotos y requiere elegir modelo antes de enviar el pedido por WhatsApp con el detalle seleccionado.
+
+### Por qué se hizo
+- Solicitud expresa del usuario para limpiar avisos de consola y permitir personalización de modelo.
+
+### Cómo se hizo
+- Modificaciones en `src/components/Navbar.tsx`, `src/components/home/MobileCatalog.tsx`, `src/components/category/BottomSheet.tsx`, `src/data/products.ts` y ruta `app/pollitos/page.tsx`.
+
+---
+
 ## Contacto y Recursos
 
 **Repositorio:** [No configurado]  

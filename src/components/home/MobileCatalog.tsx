@@ -24,9 +24,11 @@ function CatalogContent() {
     if (categoryParam) {
       const normalizedCategory = categoryParam.charAt(0).toUpperCase() + categoryParam.slice(1).toLowerCase();
       // Validate it exists in our categories
-      const categories = ['Todos', 'Nubi', 'Moñas', 'Diademas', 'Llaveros', 'Bolsos'];
+      const categories = ['Todos', 'Pollitos', 'Nubi', 'Moñas', 'Diademas', 'Llaveros', 'Bolsos'];
       if (categories.includes(normalizedCategory)) {
         setActiveCategory(normalizedCategory);
+      } else if (categoryParam.toLowerCase() === 'pollitos') {
+        setActiveCategory('Pollitos');
       } else if (categoryParam.toLowerCase() === 'monas') {
         setActiveCategory('Moñas');
       }
@@ -44,7 +46,7 @@ function CatalogContent() {
   }, [productParam]);
 
   // Categories list (Flores oculto temporalmente - producto aún no disponible)
-  const categories = ['Todos', 'Nubi', 'Moñas', 'Diademas', 'Llaveros', 'Bolsos'];
+  const categories = ['Todos', 'Pollitos', 'Nubi', 'Moñas', 'Diademas', 'Llaveros', 'Bolsos'];
 
   // Handle category pill click
   const handleCategoryClick = (cat: string) => {
@@ -121,17 +123,28 @@ function CatalogContent() {
         <div className="flex gap-2 overflow-x-auto px-5 pb-1 scrollbar-hide">
           {categories.map((cat) => {
             const isSelected = activeCategory === cat;
+            const isPollitos = cat === 'Pollitos';
             return (
               <button
                 key={cat}
                 onClick={() => handleCategoryClick(cat)}
-                className={`px-4 py-2 rounded-full text-xs font-bold whitespace-nowrap transition-all duration-200 scale-95 active:scale-90 ${
+                className={`px-4 py-2 rounded-full text-xs font-bold whitespace-nowrap transition-all duration-200 scale-95 active:scale-90 flex items-center gap-1.5 ${
                   isSelected
-                    ? 'bg-nuditos-marron text-white shadow-md'
-                    : 'bg-white text-nuditos-marron border border-nuditos-beige/65 hover:bg-gray-50'
+                    ? isPollitos
+                      ? 'bg-gradient-to-r from-amber-500 to-yellow-400 text-white shadow-lg ring-2 ring-yellow-300 scale-100 font-extrabold'
+                      : 'bg-nuditos-marron text-white shadow-md'
+                    : isPollitos
+                      ? 'bg-amber-100 text-amber-900 border-2 border-amber-400 hover:bg-amber-200 font-black shadow-sm ring-1 ring-amber-300/50'
+                      : 'bg-white text-nuditos-marron border border-nuditos-beige/65 hover:bg-gray-50'
                 }`}
               >
+                {isPollitos && <span className="text-sm">🐥</span>}
                 {cat}
+                {isPollitos && (
+                  <span className="bg-amber-500 text-white text-[9px] px-1.5 py-0.5 rounded-full font-black uppercase tracking-wider">
+                    Nuevo
+                  </span>
+                )}
               </button>
             );
           })}
@@ -148,7 +161,7 @@ function CatalogContent() {
           </div>
         ) : (
           <div className="grid grid-cols-2 gap-3.5">
-            {filteredProducts.map((product) => {
+            {filteredProducts.map((product, index) => {
               // Marketing badging tags mapping
               let badgeText = '';
               let badgeColor = '';
@@ -156,6 +169,9 @@ function CatalogContent() {
               if (product.slug === 'nubi') {
                 badgeText = 'TERAPÉUTICO';
                 badgeColor = 'bg-nuditos-marron text-white';
+              } else if (product.slug === 'pollitos-con-sombrero') {
+                badgeText = '⭐ DESTACADO 🐥';
+                badgeColor = 'bg-gradient-to-r from-amber-500 to-yellow-500 text-white shadow-sm font-black';
               } else if (product.isNew) {
                 badgeText = 'NUEVO';
                 badgeColor = 'bg-nuditos-verde text-white';
@@ -179,6 +195,8 @@ function CatalogContent() {
                         fill
                         className="object-cover transition-transform duration-500 group-hover:scale-105"
                         sizes="(max-width: 250px) 50vw, 250px"
+                        loading={index < 2 ? 'eager' : 'lazy'}
+                        priority={index === 0}
                       />
                       
                       {/* Floating Badge (Marketing) */}

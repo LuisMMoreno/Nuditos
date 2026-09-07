@@ -34,6 +34,7 @@ export default function Navbar() {
                   src="/isologo_sin_fondo.png"
                   alt="Logo Nuditos"
                   fill
+                  sizes="40px"
                   className="object-contain"
                   priority
                 />
@@ -58,6 +59,7 @@ export default function Navbar() {
                   src="/whatsapp.png"
                   alt="WhatsApp"
                   fill
+                  sizes="16px"
                   className="object-contain"
                 />
               </div>

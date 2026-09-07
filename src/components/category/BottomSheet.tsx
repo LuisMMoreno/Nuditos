@@ -76,6 +76,58 @@ const nubiOutfitImages: Record<string, string[]> = {
   ],
 };
 
+interface PollitoModel {
+  id: string;
+  name: string;
+  hat: string;
+  image: string;
+  icon: string;
+  tagColor: string;
+}
+
+const pollitoModels: PollitoModel[] = [
+  {
+    id: 'stitch',
+    name: 'Stitch',
+    hat: 'Sombrerito azul con orejitas',
+    image: '/productos/pollitos/1.jpeg',
+    icon: '💙',
+    tagColor: 'bg-blue-100 text-blue-800 border-blue-200',
+  },
+  {
+    id: 'angel',
+    name: 'Ángel',
+    hat: 'Sombrerito rosado con orejitas',
+    image: '/productos/pollitos/2.jpeg',
+    icon: '💖',
+    tagColor: 'bg-pink-100 text-pink-800 border-pink-200',
+  },
+  {
+    id: 'chaquipiyo',
+    name: 'Chaquipiyo',
+    hat: 'Pollito saliendo del cascarón',
+    image: '/productos/pollitos/3.jpeg',
+    icon: '🐣',
+    tagColor: 'bg-amber-100 text-amber-800 border-amber-200',
+  },
+  {
+    id: 'spiderman',
+    name: 'Spiderman',
+    hat: 'Máscara roja arácnida tejida',
+    image: '/productos/pollitos/4.jpeg',
+    icon: '🕷️',
+    tagColor: 'bg-red-100 text-red-800 border-red-200',
+  },
+  {
+    id: 'sapito',
+    name: 'Sapito',
+    hat: 'Sombrerito verde con ojitos',
+    image: '/productos/pollitos/5.jpeg',
+    icon: '🐸',
+    tagColor: 'bg-emerald-100 text-emerald-800 border-emerald-200',
+  },
+];
+
 export default function BottomSheet({ product, isOpen, onClose }: BottomSheetProps) {
   // Lock body scroll when open
   useEffect(() => {
@@ -94,6 +146,10 @@ export default function BottomSheet({ product, isOpen, onClose }: BottomSheetPro
   const [quantity, setQuantity] = useState(1);
   const [activeImageIndex, setActiveImageIndex] = useState(0);
 
+  // Pollitos State
+  const [selectedPollitoModel, setSelectedPollitoModel] = useState<PollitoModel | null>(null);
+  const [pollitoModelError, setPollitoModelError] = useState(false);
+
   // Reset states when product changes
   useEffect(() => {
     setSelectedModel(nubiModels[0]);
@@ -101,11 +157,14 @@ export default function BottomSheet({ product, isOpen, onClose }: BottomSheetPro
     setCustomName('');
     setQuantity(1);
     setActiveImageIndex(0);
+    setSelectedPollitoModel(null);
+    setPollitoModelError(false);
   }, [product]);
 
   if (!product) return null;
 
   const isNubi = product.slug === 'nubi';
+  const isPollitos = product.slug === 'pollitos-con-sombrero';
 
   // Get gallery images
   const allImages = isNubi 
@@ -118,6 +177,20 @@ export default function BottomSheet({ product, isOpen, onClose }: BottomSheetPro
 
   const totalPrice = currentPrice * quantity;
 
+  const handleSelectPollitoModel = (model: PollitoModel, index: number) => {
+    setSelectedPollitoModel(model);
+    setPollitoModelError(false);
+    setActiveImageIndex(index);
+  };
+
+  const handleSelectImageIndex = (idx: number) => {
+    setActiveImageIndex(idx);
+    if (isPollitos && pollitoModels[idx]) {
+      setSelectedPollitoModel(pollitoModels[idx]);
+      setPollitoModelError(false);
+    }
+  };
+
   const handleBuyOnWhatsApp = () => {
     let message = '';
     if (isNubi) {
@@ -128,6 +201,22 @@ ${customName.trim() ? `- Nombre para mi Nubi: "${customName.trim()}"\n` : ''}- C
 - Total: $${totalPrice.toLocaleString('es-CO')} COP
 
 ¿Me confirman la disponibilidad para envío?`;
+    } else if (isPollitos) {
+      if (!selectedPollitoModel) {
+        setPollitoModelError(true);
+        const selectorEl = document.getElementById('pollito-model-selector');
+        if (selectorEl) {
+          selectorEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+        return;
+      }
+      message = `¡Hola Nuditos! Me interesa comprar Pollitos con Sombrero:
+- Modelo elegido: ${selectedPollitoModel.name} (${selectedPollitoModel.hat})
+- Precio Unitario: $${product.price.toLocaleString('es-CO')} COP
+- Cantidad: ${quantity}
+- Total: $${totalPrice.toLocaleString('es-CO')} COP
+
+¿Me confirman si tienen disponible para entrega?`;
     } else {
       message = `¡Hola Nuditos! Me interesa comprar este producto:
 - Nombre: ${product.name}
@@ -212,7 +301,7 @@ ${customName.trim() ? `- Nombre para mi Nubi: "${customName.trim()}"\n` : ''}- C
                     {allImages.map((_, i) => (
                       <button
                         key={i}
-                        onClick={() => setActiveImageIndex(i)}
+                        onClick={() => handleSelectImageIndex(i)}
                         className={`w-2.5 h-2.5 rounded-full transition-all duration-200 ${
                           activeImageIndex === i ? 'bg-nuditos-marron-oscuro w-5' : 'bg-gray-300/80'
                         }`}
@@ -229,7 +318,7 @@ ${customName.trim() ? `- Nombre para mi Nubi: "${customName.trim()}"\n` : ''}- C
                   {allImages.map((img, i) => (
                     <button
                       key={i}
-                      onClick={() => setActiveImageIndex(i)}
+                      onClick={() => handleSelectImageIndex(i)}
                       className={`relative w-16 h-16 rounded-xl overflow-hidden flex-shrink-0 border-2 transition-all ${
                         activeImageIndex === i ? 'border-nuditos-marron-oscuro scale-95 shadow-sm' : 'border-transparent opacity-75'
                       }`}
@@ -375,6 +464,83 @@ ${customName.trim() ? `- Nombre para mi Nubi: "${customName.trim()}"\n` : ''}- C
                 </div>
               )}
 
+              {/* DYNAMIC POLLITOS MODEL SELECTION FLOW */}
+              {isPollitos && (
+                <div id="pollito-model-selector" className="space-y-3.5 border-t border-nuditos-beige pt-5">
+                  <div className="flex items-center justify-between">
+                    <h4 className="text-sm font-extrabold text-nuditos-marron-oscuro uppercase tracking-wider flex items-center gap-1.5">
+                      <Sparkles className="w-4 h-4 text-amber-500" />
+                      Elige tu Modelo ({pollitoModels.length} disponibles)
+                    </h4>
+                    {selectedPollitoModel ? (
+                      <span className="text-xs font-bold text-[#20ba5a] flex items-center gap-1 bg-green-50 px-2.5 py-1 rounded-full border border-green-200">
+                        <Check className="w-3.5 h-3.5" />
+                        {selectedPollitoModel.name}
+                      </span>
+                    ) : (
+                      <span className="text-[11px] font-black text-amber-800 bg-amber-100 px-2.5 py-0.5 rounded-full border border-amber-300 animate-pulse">
+                        Paso Requerido
+                      </span>
+                    )}
+                  </div>
+
+                  {pollitoModelError && !selectedPollitoModel && (
+                    <div className="p-3 bg-red-50 border border-red-200 rounded-xl text-xs font-bold text-red-700 flex items-center gap-2">
+                      <AlertCircle className="w-4 h-4 shrink-0 text-red-500" />
+                      Por favor selecciona un modelo antes de pedir por WhatsApp.
+                    </div>
+                  )}
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                    {pollitoModels.map((model, idx) => {
+                      const isSelected = selectedPollitoModel?.id === model.id;
+                      return (
+                        <button
+                          key={model.id}
+                          type="button"
+                          onClick={() => handleSelectPollitoModel(model, idx)}
+                          className={`p-3 rounded-2xl border text-left transition-all duration-200 flex items-center gap-3 active:scale-[0.98] ${
+                            isSelected
+                              ? 'border-amber-500 bg-amber-50/80 shadow-md ring-2 ring-amber-400'
+                              : 'border-gray-200 bg-white/70 hover:bg-white hover:border-amber-200'
+                          }`}
+                        >
+                          <div className="relative w-14 h-14 rounded-xl overflow-hidden shrink-0 border border-gray-100 bg-gray-50 shadow-xs">
+                            <Image
+                              src={model.image}
+                              alt={model.name}
+                              fill
+                              className="object-cover"
+                              sizes="56px"
+                            />
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <div className="flex items-center gap-1.5 mb-0.5">
+                              <span className="text-base">{model.icon}</span>
+                              <span className="text-xs font-black text-nuditos-marron-oscuro truncate">
+                                {model.name}
+                              </span>
+                            </div>
+                            <p className="text-[10px] text-nuditos-marron line-clamp-1">
+                              {model.hat}
+                            </p>
+                          </div>
+                          <div
+                            className={`w-5 h-5 rounded-full flex items-center justify-center shrink-0 border transition-all ${
+                              isSelected
+                                ? 'bg-amber-500 border-amber-500 text-white'
+                                : 'border-gray-300 bg-white'
+                            }`}
+                          >
+                            {isSelected && <Check className="w-3 h-3 stroke-[3]" />}
+                          </div>
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
+
             </div>
 
             {/* Sticky Buy Panel (Action Bottom Bar) */}
@@ -404,10 +570,20 @@ ${customName.trim() ? `- Nombre para mi Nubi: "${customName.trim()}"\n` : ''}- C
               {/* WhatsApp Call to Action */}
               <button
                 onClick={handleBuyOnWhatsApp}
-                className="flex-1 bg-[#25D366] text-white hover:bg-[#20ba5a] active:scale-[0.98] transition-all py-3.5 px-4 rounded-2xl flex items-center justify-center gap-2 text-sm font-extrabold shadow-md outline-none focus-soft min-h-[48px]"
+                className={`flex-1 text-white active:scale-[0.98] transition-all py-3.5 px-4 rounded-2xl flex items-center justify-center gap-2 text-sm font-extrabold shadow-md outline-none focus-soft min-h-[48px] ${
+                  isPollitos && !selectedPollitoModel
+                    ? 'bg-[#25D366]/85 hover:bg-[#25D366]'
+                    : 'bg-[#25D366] hover:bg-[#20ba5a]'
+                }`}
               >
                 <ShoppingBag className="w-4 h-4" />
-                <span>Pedir por WhatsApp</span>
+                <span>
+                  {isPollitos && !selectedPollitoModel
+                    ? 'Selecciona tu modelo'
+                    : isPollitos && selectedPollitoModel
+                    ? `Pedir (${selectedPollitoModel.name})`
+                    : 'Pedir por WhatsApp'}
+                </span>
                 <span className="bg-white/25 px-2 py-0.5 rounded-md text-xs font-black">
                   ${totalPrice.toLocaleString('es-CO')}
                 </span>

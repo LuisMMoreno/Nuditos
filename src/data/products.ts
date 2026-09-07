@@ -38,6 +38,31 @@ export const productsData: ProductDetail[] = [
     ]
   },
   {
+    id: 16,
+    slug: 'pollitos-con-sombrero',
+    name: 'Pollitos con Sombrero',
+    description: 'Tiernos pollitos tejidos a mano con sombreritos temáticos y textura ultra suave.',
+    price: 12000,
+    image: '/productos/pollitos/1.jpeg',
+    category: 'Pollitos',
+    isNew: true,
+    isPopular: true,
+    story: [
+      'Nuestros tiernos pollitos con sombrero están tejidos con suave hilo de felpa aterciopelada.',
+      'Su textura agradable y sus divertidos sombreros temáticos ofrecen una experiencia inolvidable.'
+    ],
+    features: [
+      { title: 'Textura Aterciopelada', desc: 'Tejido con felpa extra suave para una sensación reconfortante.' },
+      { title: 'Sombreros Temáticos', desc: 'Divertidos diseños con sombreritos coleccionables.' }
+    ],
+    gallery: [
+      '/productos/pollitos/2.jpeg',
+      '/productos/pollitos/3.jpeg',
+      '/productos/pollitos/4.jpeg',
+      '/productos/pollitos/5.jpeg'
+    ]
+  },
+  {
     id: 1,
     slug: 'mona-girasol',
     name: 'Moña Girasol',
