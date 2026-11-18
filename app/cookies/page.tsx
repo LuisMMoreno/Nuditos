@@ -31,7 +31,7 @@ export default function CookiesPage() {
             <div className="space-y-4">
               <div className="bg-nuditos-crema rounded-2xl p-6">
                 <h3 className="font-bold text-nuditos-marron-oscuro mb-2">
-                  🛒 Cookies esenciales
+                  Cookies esenciales
                 </h3>
                 <p className="text-nuditos-marron text-sm">
                   Necesarias para el funcionamiento del carrito de compras. Sin estas cookies, no podrías agregar productos o completar tu compra. No pueden ser deshabilitadas.
@@ -40,7 +40,7 @@ export default function CookiesPage() {
 
               <div className="bg-nuditos-rosa-claro rounded-2xl p-6">
                 <h3 className="font-bold text-nuditos-marron-oscuro mb-2">
-                  📊 Cookies analíticas
+                  Cookies analíticas
                 </h3>
                 <p className="text-nuditos-marron text-sm">
                   Nos ayudan a entender cómo usas el sitio (páginas visitadas, tiempo de sesión) para mejorar la experiencia. Se puede optar por no participar.
@@ -49,7 +49,7 @@ export default function CookiesPage() {
 
               <div className="bg-nuditos-amarillo-claro rounded-2xl p-6">
                 <h3 className="font-bold text-nuditos-marron-oscuro mb-2">
-                  💾 Cookies de preferencias
+                  Cookies de preferencias
                 </h3>
                 <p className="text-nuditos-marron text-sm">
                   Recuerdan tu configuración como el idioma, región o preferencias de visualización para personalizar tu experiencia.

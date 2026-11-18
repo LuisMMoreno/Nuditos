@@ -1,22 +1,61 @@
 'use client';
 
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { IconChristmasTree, IconSparkles, IconGift } from '@tabler/icons-react';
+
+const promos = [
+  'PROMO NAVIDADEÑA en Pollitos para el Árbol',
+  'ENVÍO GRATIS EN FUSAGASUGÁ · TEJIDO ARTESANAL A MANO'
+];
 
 export default function Navbar() {
+  const [promoIndex, setPromoIndex] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setPromoIndex((prev) => (prev + 1) % promos.length);
+    }, 4500);
+    return () => clearInterval(interval);
+  }, []);
+
+  const handlePrev = () => {
+    setPromoIndex((prev) => (prev - 1 + promos.length) % promos.length);
+  };
+
+  const handleNext = () => {
+    setPromoIndex((prev) => (prev + 1) % promos.length);
+  };
+
   return (
     <header className="bg-white">
-      {/* Franja de Promociones */}
-      <div className="bg-[#2A2A2A] text-white text-xs sm:text-sm py-2.5 px-4 flex justify-between items-center w-full">
-        <button aria-label="Promoción anterior" className="opacity-80 hover:opacity-100 transition-opacity">
-          <ChevronLeft className="w-4 h-4" />
+      {/* Franja de Promociones Navideña */}
+      <div className="bg-gradient-to-r from-[#142f23] via-[#1b4332] to-[#142f23] text-white text-xs sm:text-sm py-2 px-4 flex justify-between items-center w-full border-b border-amber-400/20">
+        <button
+          onClick={handlePrev}
+          aria-label="Promoción anterior"
+          className="opacity-80 hover:opacity-100 transition-opacity p-0.5"
+        >
+          <ChevronLeft className="w-4 h-4 text-emerald-200" />
         </button>
-        <div className="text-center flex-1 font-medium tracking-wide">
-          🔥 ENVÍO GRATIS EN FUSAGASUGÁ 🔥
-        </div>
-        <button aria-label="Siguiente promoción" className="opacity-80 hover:opacity-100 transition-opacity">
-          <ChevronRight className="w-4 h-4" />
+        <Link
+          href="/?product=pollitos-navidenos"
+          className="text-center flex-1 font-semibold tracking-wide flex items-center justify-center gap-1.5 hover:opacity-95 transition-opacity"
+        >
+          <IconChristmasTree className="w-4 h-4 text-emerald-300 shrink-0" />
+          <span className="text-[10px] sm:text-xs text-amber-100 font-extrabold uppercase tracking-wider line-clamp-1">
+            {promos[promoIndex]}
+          </span>
+          <IconSparkles className="w-3.5 h-3.5 text-amber-300 shrink-0" />
+        </Link>
+        <button
+          onClick={handleNext}
+          aria-label="Siguiente promoción"
+          className="opacity-80 hover:opacity-100 transition-opacity p-0.5"
+        >
+          <ChevronRight className="w-4 h-4 text-emerald-200" />
         </button>
       </div>
 
@@ -41,6 +80,10 @@ export default function Navbar() {
               </div>
               <span className="ml-2 font-display text-xl tracking-tight text-nuditos-marron-oscuro font-bold">
                 Nuditos
+              </span>
+              <span className="ml-2 inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-800 text-[10px] font-extrabold uppercase tracking-wider">
+                <IconChristmasTree className="w-3 h-3 text-emerald-600" />
+                Navidad
               </span>
             </Link>
           </div>

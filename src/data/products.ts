@@ -8,12 +8,44 @@ export interface ProductDetail {
   category: string;
   isNew?: boolean;
   isPopular?: boolean;
+  isFeatured?: boolean;
+  isSpan2?: boolean;
   story: string[];
   features?: { title: string; desc: string }[];
   gallery?: string[];
 }
 
 export const productsData: ProductDetail[] = [
+  {
+    id: 17,
+    slug: 'pollitos-navidenos',
+    name: 'Pollitos Navideños para Árbol',
+    description: 'Decoración navideña artesanal para tu árbol. Promo: 1 por $12.000, 3 por $30.000 o 6 por $50.000.',
+    price: 12000,
+    image: '/productos/pollitos-navidenos/PORTADA.jpeg',
+    category: 'Navidad',
+    isNew: true,
+    isPopular: true,
+    isFeatured: true,
+    isSpan2: true,
+    story: [
+      'Nuestros Pollitos Navideños son una edición especial para tu árbol. Llena de ternura y calidez navideña cada rincón de tu hogar.',
+      'Super promoción navideña: 1 unidad a $12.000, 3 por $30.000 (ahorras $6.000) y 6 por solo $50.000 (ahorras $22.000). Son 100% tejidos a mano.'
+    ],
+    features: [
+      { title: 'Super Promo Navideña', desc: '1 por $12.000, 3 por $30.000 o 6 por $50.000 con descuento automático.' },
+      { title: 'Listo para Colgar', desc: 'Incluye cordón suave y seguro para las ramas de tu árbol.' },
+      { title: 'Liviano y Seguro', desc: 'No deforma las ramas y resiste caídas sin romperse.' }
+    ],
+    gallery: [
+      '/productos/pollitos-navidenos/promo.jpeg',
+      '/productos/pollitos-navidenos/1.jpeg',
+      '/productos/pollitos-navidenos/2.jpeg',
+      '/productos/pollitos-navidenos/3.jpeg',
+      '/productos/pollitos-navidenos/4.jpeg',
+      '/productos/pollitos-navidenos/5.jpeg'
+    ]
+  },
   {
     id: 0,
     slug: 'nubi',
